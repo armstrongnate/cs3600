@@ -15,17 +15,33 @@
 #include <cstring>
 #include <cstdlib>
 #include <GLUT/glut.h>
+#include <vector>
+
+#include "circle.h"
 
 
 // Global Variables (Only what you need!)
 double screen_x = 700;
 double screen_y = 500;
 
+std::vector<Circle *>_circles;
+
+double kNumCircles = 10;
+
 double gX = 200;
 double gY = 200;
-double gDX = .9;
-double gDY = 1.2;
 
+double gXRange = 100;
+double gYRange = 100;
+
+double gDX = 4;
+double gDY = 4;
+
+double gDXRange = 2;
+double gDYRange = 2;
+
+double gRadius = 50;
+double gRadiusRange = 25;
 
 //
 // Functions that draw basic primitives
@@ -92,27 +108,30 @@ void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// Test lines that draw all three shapes and some text.
-	// Delete these when you get your code working.
-	glColor3ub(0, 0, 255);
-    double width = 50;
-    DrawRectangle(gX, gY, gX + width, gY + width);
-
-    gX += gDX;
-    gY += gDY;
-
-    if (gY <= 0 || gY + width > screen_y)
+    for (int i=0; i<_circles.size(); i++)
     {
-        gDY = -gDY;
-    }
-
-    if (gX <= 0 || gX + width > screen_x)
-    {
-        gDX = -gDX;
+        Circle *circle = _circles[i];
+        glColor3ub(circle->red, circle->green, circle->blue);
+        DrawCircle(circle->x, circle->y, circle->radius);
+        circle->x += circle->dx;
+        circle->y += circle->dy;
+        if (circle->y - circle->radius <= 0 || circle->y + circle->radius > screen_y)
+        {
+            circle->dy = -circle->dy;
+        }
+        if (circle->x - circle->radius <= 0 || circle->x + circle->radius > screen_x)
+        {
+            circle->dx = -circle->dx;
+        }
     }
 
 	glutSwapBuffers();
     glutPostRedisplay();
+}
+
+double randomNumberInRange(double min, double max)
+{
+    return min + (rand() % (int)(max - min + 1));
 }
 
 
@@ -177,6 +196,20 @@ void mouse(int mouse_button, int state, int x, int y)
 // Your initialization code goes here.
 void InitializeMyStuff()
 {
+    std::srand( time(NULL) );
+    for (int i=0; i<kNumCircles; i++)
+    {
+        double x, y, radius, dx, dy, r, g, b;
+        x = randomNumberInRange(gX - gXRange, gX + gXRange);
+        y = randomNumberInRange(gY - gYRange, gY + gYRange);
+        radius = randomNumberInRange(gRadius - gRadiusRange, gRadius + gRadiusRange);
+        dx = randomNumberInRange(gDX - gDXRange, gDX + gDXRange);
+        dy = randomNumberInRange(gDY - gDYRange, gDY + gDYRange);
+        r = randomNumberInRange(0, 255);
+        g = randomNumberInRange(0, 255);
+        b = randomNumberInRange(0, 255);
+        _circles.push_back(new Circle(x, y, radius, dx, dy, r, g, b));
+    }
 }
 
 
