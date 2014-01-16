@@ -10,28 +10,32 @@
 #define __Project2__circle__
 
 #include <iostream>
+#include <vector>
+#include <GLUT/glut.h>
 
 class Circle
 {
 
 public:
     Circle(double x, double y, double radius, double dx, double dy, double red, double green, double blue);
-    void update(int i);
+    void update(int i, double screenX, double screenY, std::vector<Circle *>circles);
     void draw();
-    double getx() { return x; }
-	double gety() { return y; }
-	double getradius() { return radius; }
-	double getr() { return red; }
-	double getg() {return green;}
-	double getb() { return blue; }
-	double getdx() { return dx; }
-	double getdy() { return dy; }
-	double getnextx() { return x + dx; }
-	double getnexty() { return y + dy; }
+    double getx();
+	double gety();
+	double getradius();
+	double getr();
+	double getg();
+	double getb();
+	double getdx();
+	double getdy();
+	double getnextx();
+	double getnexty();
+	void setdx(double dx);
+	void setdy(double dy);
 
-	void setdx(double dx) { this->dx = dx; }
-	void setdy(double dy) { this->dy = dy; }
-    double x, y, radius, dx, dy, red, green, blue;
+private:
+    double _x, _y, _radius, _dx, _dy, _red, _green, _blue;
+    bool _colliding;
 };
 
 #endif /* defined(__Project2__circle__) */

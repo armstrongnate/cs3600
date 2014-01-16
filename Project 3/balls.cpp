@@ -10,8 +10,8 @@
 
 Balls::Balls()
 {
-    _screenX = 700;
-    _screenY = 500;
+    _screenX = 900;
+    _screenY = 700;
 }
 
 std::vector<Circle *> Balls::getCircles()
@@ -32,4 +32,14 @@ double Balls::getScreenX()
 double Balls::getScreenY()
 {
     return _screenY;
+}
+
+void Balls::setScreenX(double screenX)
+{
+    _screenX = screenX;
+}
+
+void Balls::setScreenY(double screenY)
+{
+    _screenY = screenY;
 }

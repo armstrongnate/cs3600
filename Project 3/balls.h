@@ -20,6 +20,8 @@ public:
     std::vector<Circle *> getCircles();
     double getScreenX();
     double getScreenY();
+    void setScreenX(double screenX);
+    void setScreenY(double screenY);
     void addCircle(Circle *circle);
 
 private:
