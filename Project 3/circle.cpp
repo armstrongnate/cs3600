@@ -19,3 +19,13 @@ Circle::Circle(double x, double y, double radius, double dx, double dy, double r
     this->green = green;
     this->blue = blue;
 }
+
+void Circle::update(int i)
+{
+    // nothing
+}
+
+void Circle::draw()
+{
+    // nothing
+}

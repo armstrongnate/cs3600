@@ -12,6 +12,7 @@
 		43764D271884460A000B70E7 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43764D261884460A000B70E7 /* OpenGL.framework */; };
 		43764D2C18844637000B70E7 /* circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43764D2918844637000B70E7 /* circle.cpp */; };
 		43764D2D18844637000B70E7 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43764D2B18844637000B70E7 /* main.cpp */; };
+		43EFC84918877A34007587C7 /* balls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43EFC84718877A34007587C7 /* balls.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,8 @@
 		43764D2918844637000B70E7 /* circle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = circle.cpp; sourceTree = "<group>"; };
 		43764D2A18844637000B70E7 /* circle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = circle.h; sourceTree = "<group>"; };
 		43764D2B18844637000B70E7 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		43EFC84718877A34007587C7 /* balls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = balls.cpp; sourceTree = "<group>"; };
+		43EFC84818877A34007587C7 /* balls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = balls.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +56,8 @@
 		43764D0F188445CE000B70E7 = {
 			isa = PBXGroup;
 			children = (
+				43EFC84718877A34007587C7 /* balls.cpp */,
+				43EFC84818877A34007587C7 /* balls.h */,
 				43764D2918844637000B70E7 /* circle.cpp */,
 				43764D2A18844637000B70E7 /* circle.h */,
 				43764D2B18844637000B70E7 /* main.cpp */,
@@ -138,6 +143,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43EFC84918877A34007587C7 /* balls.cpp in Sources */,
 				43764D2D18844637000B70E7 /* main.cpp in Sources */,
 				43764D2C18844637000B70E7 /* circle.cpp in Sources */,
 			);
@@ -247,6 +253,7 @@
 				43764D23188445CE000B70E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

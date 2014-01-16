@@ -16,6 +16,21 @@ class Circle
 
 public:
     Circle(double x, double y, double radius, double dx, double dy, double red, double green, double blue);
+    void update(int i);
+    void draw();
+    double getx() { return x; }
+	double gety() { return y; }
+	double getradius() { return radius; }
+	double getr() { return red; }
+	double getg() {return green;}
+	double getb() { return blue; }
+	double getdx() { return dx; }
+	double getdy() { return dy; }
+	double getnextx() { return x + dx; }
+	double getnexty() { return y + dy; }
+
+	void setdx(double dx) { this->dx = dx; }
+	void setdy(double dy) { this->dy = dy; }
     double x, y, radius, dx, dy, red, green, blue;
 };
 
