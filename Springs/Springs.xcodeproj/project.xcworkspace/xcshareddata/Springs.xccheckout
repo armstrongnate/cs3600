@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>06EE00C3-4404-497B-9BEF-6B2C1B6C6537</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Springs</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>FF2717EB-2DBC-44B3-A4EC-B6E222084396</key>
+		<string>ssh://github.com/n8armstrong/cs3600.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Springs/Springs.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>FF2717EB-2DBC-44B3-A4EC-B6E222084396</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/n8armstrong/cs3600.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>FF2717EB-2DBC-44B3-A4EC-B6E222084396</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FF2717EB-2DBC-44B3-A4EC-B6E222084396</string>
+			<key>IDESourceControlWCCName</key>
+			<string>3600</string>
+		</dict>
+	</array>
+</dict>
+</plist>

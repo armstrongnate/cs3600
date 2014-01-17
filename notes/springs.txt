@@ -1,0 +1,8 @@
+DeltaT is the time between frames.
+
+RungeKuttaStep() loops through each particle, comes up with a velocity and adds that velocity to the particle position
+
+PS is a list of particles
+
+3rd bullet: default value is length between two points (use pythag). then multiple the 5th param by that default value. if no param is provided,
+use the default value.

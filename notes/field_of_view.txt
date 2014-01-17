@@ -1,0 +1,7 @@
+tanTHETA = 1.5/4
+
+THETA = aTan(1.5/4)
+
+fov = 2(aTan(1.5/4)) // this is in radians
+
+d = (fov * 180) / pi
