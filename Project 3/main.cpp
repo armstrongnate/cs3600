@@ -24,7 +24,7 @@
 
 // Global Variables (Only what you need!)
 
-double kNumCircles = 15;
+double kNumCircles = 10;
 
 double gDX = .2;
 double gDY = .2;
@@ -33,7 +33,7 @@ double gDXRange = .05;
 double gDYRange = .05;
 
 double gRadius = 30;
-double gRadiusRange = 10;
+double gRadiusRange = 20;
 
 Balls *BALLS;
 

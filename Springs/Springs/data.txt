@@ -1,0 +1,26 @@
+particle
+100 200 4.0 -1.0 10 false
+particle
+200 200 4.0 0.0 5 false
+particle
+20 405 5.0 1.0 5 false
+particle
+40 410 -1.0 -2.0 5 false
+particle
+420 405 5.0 1.0 5 true
+particle
+440 410 -1.0 -2.0 5 false
+particle
+490 410 -1.0 -2.0 5 false
+springForce
+1 2 4 0.5 80
+springForce
+3 4 0.5 0.1 100
+springForce
+5 6 0.5 0.1 100
+springForce
+7 6 0.5 0.1 100
+dragForce
+.001
+gravityForce
+0.0 -0.50

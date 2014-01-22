@@ -10,8 +10,8 @@
 
 Balls::Balls()
 {
-    _screenX = 900;
-    _screenY = 700;
+    _screenX = 1000;
+    _screenY = 800;
 }
 
 std::vector<Circle *> Balls::getCircles()

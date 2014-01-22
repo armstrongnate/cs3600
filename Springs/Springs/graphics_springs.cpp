@@ -7,8 +7,10 @@
 #include <cstdio>
 #include <cassert>
 #include <cmath>
-#include <string.h>
+#include <string>
+#include <cstring>
 #include <iostream>
+#include <fstream>
 using namespace std;
 #include "graphics.h"
 #include "particle.h"
@@ -249,45 +251,54 @@ void mouse(int mouse_button, int state, int x, int y)
 
 void InitParticles1()
 {
-	Particle *p1 = new Particle(100, 200,  4.0, -1.0,  10, false);
-	PS.AddParticle(p1);
-
-	Particle *p2 = new Particle(200, 200,  4.0, 0.0,  5, false);
-	PS.AddParticle(p2);
-
-	Particle *p3 = new Particle(20, 405,  5.0, 1.0,  5, false);
-	PS.AddParticle(p3);
-
-	Particle *p4 = new Particle(40, 410,  -1.0, -2.0,  5, false);
-	PS.AddParticle(p4);
-
-	Particle *p5 = new Particle(420, 405,  5.0, 1.0,  5, true);
-	PS.AddParticle(p5);
-
-	Particle *p6 = new Particle(440, 410,  -1.0, -2.0,  5, false);
-	PS.AddParticle(p6);
-
-	Particle *p7 = new Particle(490, 410,  -1.0, -2.0,  5, false);
-	PS.AddParticle(p7);
-
-	Force * F = new SpringForce(p1, p2, 4, 0.5, 80);
-	PS.AddForce(F);
-
-	Force * s2 = new SpringForce(p3, p4, .5, 0.1, 100);
-	PS.AddForce(s2);
-
-	Force * s3 = new SpringForce(p5, p6, .5, 0.1, 100);
-	PS.AddForce(s3);
-
-	Force * s4 = new SpringForce(p7, p6, .5, 0.1, 100);
-	PS.AddForce(s4);
-
-	Force * DF = new DragForce(.001, &PS);
-	PS.AddForce(DF);
-
-	double gravity[DIM] = {0.0, -0.50};
-	Force * F2 = new GravityForce(gravity, &PS);
-	PS.AddForce(F2);
+   string klass;
+   string filename = "/Users/nate/school/3600/Springs/Springs/data.txt";
+   ifstream fin(filename.c_str());
+   double x, y, xDir, yDir, r_temp, pIndex1, pIndex2,
+       spring_constant, damping_constant, rest_length, friction_temp,
+       g1, g2;
+   string anchored_temp;
+   vector<Particle *>particles;
+   if (!fin)
+   {
+       cerr << "unable to open file" << endl;
+       return;
+   }
+   while (!fin.eof())
+   {
+       fin >> klass >> ws;
+       cout << klass << endl;
+       if (klass == "particle")
+       {
+           fin >> x >> y >> xDir >> yDir >> r_temp >> anchored_temp >> ws;
+           bool at = anchored_temp.compare("false") != 0;
+           cout << x << endl;
+           Particle *p = new Particle(x, y, xDir, yDir, r_temp, at);
+           PS.AddParticle(p);
+           particles.push_back(p);
+       }
+       else if (klass == "springForce")
+       {
+           fin >> pIndex1 >> pIndex2 >> spring_constant >> damping_constant >> rest_length >> ws;
+           Particle *p1 = particles[pIndex1 - 1];
+           Particle *p2 = particles[pIndex2 - 1];
+           Force *f = new SpringForce(p1, p2, spring_constant, damping_constant, rest_length);
+           PS.AddForce(f);
+       }
+       else if (klass == "dragForce")
+       {
+           fin >> friction_temp >> ws;
+           Force *df = new DragForce(friction_temp, &PS);
+           PS.AddForce(df);
+       }
+       else if (klass == "gravityForce")
+       {
+           fin >> g1 >> g2 >> ws;
+           double gravity[DIM] = {g1, g2};
+           Force *f = new GravityForce(gravity, &PS);
+           PS.AddForce(f);
+       }
+   }
 
 }
 
@@ -439,7 +450,7 @@ void InitParticles4()
 // Your initialization code goes here.
 void InitializeMyStuff()
 {
-	InitParticles4();
+	InitParticles1();
 }
 
 
