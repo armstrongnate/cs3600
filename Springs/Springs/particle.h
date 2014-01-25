@@ -70,6 +70,8 @@ public:
 	void AddForce(Force * f);
 	int GetNumForces();
 	Force * GetForce(int i);
+    void SetDeltaT(double deltaT);
+    double GetDeltaT();
 
 	// Methods for ODE solvers:
 	int ParticleDims();
@@ -85,6 +87,7 @@ private:
 	vector<Particle*> pArray;
 	vector<Force*> fArray;
 	double time;
+    double deltaT;
 };
 
 void EulerStep(ParticleSystem & ps, double DeltaT);

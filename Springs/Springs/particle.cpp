@@ -74,6 +74,7 @@ void Particle::SetForce(double f_temp[DIM])
 ParticleSystem::ParticleSystem()
 {
 	time = 0.0;
+    deltaT = 1.0;
 }
 
 ParticleSystem::~ParticleSystem()
@@ -233,6 +234,17 @@ int ParticleSystem::GetNumForces()
 Force * ParticleSystem::GetForce(int i)
 {
 	return fArray[i];
+}
+
+
+double ParticleSystem::GetDeltaT()
+{
+    return deltaT;
+}
+
+void ParticleSystem::SetDeltaT(double deltaT)
+{
+    this->deltaT = deltaT;
 }
 
 //

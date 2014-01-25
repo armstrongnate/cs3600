@@ -109,7 +109,7 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3dv(whiteMaterial);
 
-	static double DeltaT = 1;
+	double DeltaT = PS.GetDeltaT();
 	//EulerStep(PS, DeltaT);
 	//MidpointStep(PS, DeltaT);
 	RungeKuttaStep(PS, DeltaT);
@@ -256,7 +256,7 @@ void InitParticles1()
    ifstream fin(filename.c_str());
    double x, y, xDir, yDir, r_temp, pIndex1, pIndex2,
        spring_constant, damping_constant, rest_length, friction_temp,
-       g1, g2;
+       g1, g2, deltaT;
    string anchored_temp;
    vector<Particle *>particles;
    if (!fin)
@@ -266,8 +266,7 @@ void InitParticles1()
    }
    while (!fin.eof())
    {
-       fin >> klass >> ws;
-       cout << klass << endl;
+       fin >> klass;
        if (klass == "particle")
        {
            fin >> x >> y >> xDir >> yDir >> r_temp >> anchored_temp >> ws;
@@ -297,6 +296,11 @@ void InitParticles1()
            double gravity[DIM] = {g1, g2};
            Force *f = new GravityForce(gravity, &PS);
            PS.AddForce(f);
+       }
+       else if (klass == "deltaT")
+       {
+           fin >> deltaT >> ws;
+           PS.SetDeltaT(deltaT);
        }
    }
 
