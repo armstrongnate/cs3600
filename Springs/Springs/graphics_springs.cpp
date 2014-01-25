@@ -27,9 +27,10 @@ GLdouble greenMaterial[] = {0.1, 0.7, 0.4, 1.0};
 GLdouble brightGreenMaterial[] = {0.1, 0.9, 0.1, 1.0};
 GLdouble blueMaterial[] = {0.1, 0.2, 0.7, 1.0};
 GLdouble whiteMaterial[] = {1.0, 1.0, 1.0, 1.0};
+GLdouble blackMaterial[] = {0.0, 0.0, 0.0, 1.0};
 
-double screen_x = 700;
-double screen_y = 500;
+double screen_x = 1400;
+double screen_y = 960;
 
 // The particle system.
 ParticleSystem PS;
@@ -166,7 +167,8 @@ void display(void)
 			SpringForce * sf = (SpringForce*)f;
 			Particle * p1 = sf->GetParticle1();
 			Particle * p2 = sf->GetParticle2();
-			glColor3dv(greenMaterial);
+            GLdouble color[] = {sf->GetRed(), sf->GetGreen(), sf->GetBlue(), 1.0};
+			glColor3dv(color);
 			DrawLine(p1->GetPositionx(), p1->GetPositiony(),  p2->GetPositionx(), p2->GetPositiony());
 		}
 	}
@@ -180,7 +182,7 @@ void display(void)
 		double thePos[DIM];
 		p->GetPosition(thePos);
 		if(p->GetAnchored())
-			glColor3dv(redMaterial);
+			glColor3dv(whiteMaterial);
 		else
 			glColor3dv(whiteMaterial);
 		DrawCircle(thePos[0], thePos[1], radius);
@@ -252,11 +254,11 @@ void mouse(int mouse_button, int state, int x, int y)
 void InitParticles1()
 {
    string klass;
-   string filename = "/Users/nate/school/3600/Springs/Springs/data.txt";
+   string filename = "/Users/nate/school/3600/data.txt";
    ifstream fin(filename.c_str());
    double x, y, xDir, yDir, r_temp, pIndex1, pIndex2,
        spring_constant, damping_constant, rest_length, friction_temp,
-       g1, g2, deltaT;
+       g1, g2, deltaT, red, green, blue, alpha;
    string anchored_temp;
    vector<Particle *>particles;
    if (!fin)
@@ -278,10 +280,11 @@ void InitParticles1()
        }
        else if (klass == "springForce")
        {
-           fin >> pIndex1 >> pIndex2 >> spring_constant >> damping_constant >> rest_length >> ws;
+           fin >> pIndex1 >> pIndex2 >> spring_constant >> damping_constant >> rest_length >> red >> green >> blue >> alpha >> ws;
            Particle *p1 = particles[pIndex1 - 1];
            Particle *p2 = particles[pIndex2 - 1];
-           Force *f = new SpringForce(p1, p2, spring_constant, damping_constant, rest_length);
+           double color[4] = {red/255, green/255, blue/255, alpha};
+           Force *f = new SpringForce(p1, p2, spring_constant, damping_constant, rest_length, color);
            PS.AddForce(f);
        }
        else if (klass == "dragForce")
@@ -304,150 +307,6 @@ void InitParticles1()
        }
    }
 
-}
-
-void InitParticles2()
-{
-	bool hanging = false;
-
-	Particle *p1 = new Particle(100,300,0,0,2,hanging);
-	PS.AddParticle(p1);
-
-	Particle *p2 = new Particle(220,360,0,0,2,hanging);
-	PS.AddParticle(p2);
-
-	Particle *p3 = new Particle(215,300,0,0,2,false);
-	PS.AddParticle(p3);
-
-	Particle *p4 = new Particle(200,200,0,0,2,false);
-	PS.AddParticle(p4);
-
-	Particle *p5 = new Particle(200,105,0,0,2,false);
-	PS.AddParticle(p5);
-
-	Particle *p6 = new Particle(233,330,0,0,2,false);
-	PS.AddParticle(p6);
-
-	Particle *p7 = new Particle(250,380,0,0,2,hanging);
-	PS.AddParticle(p7);
-
-	Particle *p8 = new Particle(266,330,0,0,2,false);
-	PS.AddParticle(p8);
-
-	Particle *p9 = new Particle(280,360,0,0,2,hanging);
-	PS.AddParticle(p9);
-
-	Particle *p10 = new Particle(285,300,0,0,2,false);
-	PS.AddParticle(p10);
-
-	Particle *p11 = new Particle(300,200,0,0,2,false);
-	PS.AddParticle(p11);
-
-	Particle *p12 = new Particle(300,100,0,0,2,false);
-	PS.AddParticle(p12);
-
-	Particle *p13 = new Particle(400,300,0,0,2,hanging);
-	PS.AddParticle(p13);
-
-	double kSpringConstant = .2;
-	double kDampingConstant = 1.5;
-
-	PS.AddForce(new SpringForce(p1, p3, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p3, p4, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p4, p5, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p3, p6, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p6, p2, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p2, p7, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p7, p9, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p9, p8, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p8, p10, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p10, p11, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p11, p12, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p10, p13, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p3, p10, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p4, p11, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p6, p8, kSpringConstant, kDampingConstant));
-
-	PS.AddForce(new SpringForce(p1, p4, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p11, p13, kSpringConstant, kDampingConstant));
-	for(int i=0;i<5;i++)
-	{
-	PS.AddForce(new SpringForce(p5, p12, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p5, p11, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p4, p12, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p3, p11, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p4, p10, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p6, p10, kSpringConstant*2, kDampingConstant));
-	PS.AddForce(new SpringForce(p3, p8, kSpringConstant*2, kDampingConstant));
-	PS.AddForce(new SpringForce(p2, p9, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p6, p7, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p7, p8, kSpringConstant, kDampingConstant));
-	}
-
-	double gravity[DIM] = {0.0, -.10};
-	Force * F2 = new GravityForce(gravity, &PS);
-	PS.AddForce(F2);
-}
-
-void InitParticles3()
-{
-	Particle *p1 = new Particle(200,150,0,0,2,false);
-	PS.AddParticle(p1);
-
-	Particle *p2 = new Particle(200,300,0,0,2,false);
-	PS.AddParticle(p2);
-
-	Particle *p3 = new Particle(300,300,0,0,2,false);
-	PS.AddParticle(p3);
-
-	Particle *p4 = new Particle(300,200,0,0,2,false);
-	PS.AddParticle(p4);
-
-	double kSpringConstant = 1;
-	double kDampingConstant = 1.5;
-
-	PS.AddForce(new SpringForce(p1, p2, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p2, p3, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p3, p4, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p4, p1, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p3, p1, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p4, p2, kSpringConstant, kDampingConstant));
-
-	double gravity[DIM] = {0.0, -.30};
-	Force * F2 = new GravityForce(gravity, &PS);
-	PS.AddForce(F2);
-}
-
-void InitParticles4()
-{
-	Particle *p1 = new Particle(200,200,0,0,4,false);
-	PS.AddParticle(p1);
-
-	Particle *p2 = new Particle(200,300,0,0,4,true);
-	PS.AddParticle(p2);
-
-	Particle *p3 = new Particle(300,300,0,0,4,true);
-	PS.AddParticle(p3);
-
-	Particle *p4 = new Particle(300,200,0,0,4,false);
-	PS.AddParticle(p4);
-
-	double kSpringConstant = .8;
-	double kDampingConstant = 0.1;
-
-	PS.AddForce(new SpringForce(p1, p2, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p2, p3, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p3, p4, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p4, p1, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p3, p1, kSpringConstant, kDampingConstant));
-	PS.AddForce(new SpringForce(p2, p4, kSpringConstant, kDampingConstant));
-
-	double gravity[DIM] = {0.0, -4.30};
-	Force * F2 = new GravityForce(gravity, &PS);
-	PS.AddForce(F2);
-
-	Force * DF = new DragForce(.01, &PS);
-	PS.AddForce(DF);
 }
 
 
@@ -482,7 +341,7 @@ int main(int argc, char **argv)
 	glutReshapeFunc(reshape);
 	glutMouseFunc(mouse);
 
-	glClearColor(.3,.3,.3,0);	
+	glClearColor(0,0,0,0);
 	InitializeMyStuff();
 
 	glutMainLoop();

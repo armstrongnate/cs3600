@@ -9,7 +9,8 @@ SpringForce::SpringForce(Particle* p1_temp,
 						 Particle* p2_temp, 
 						 double spring_constant_temp, 
 						 double damping_constant_temp,
-						 double rest_length_temp):
+						 double rest_length_temp,
+                         double color[4]):
 						p1(p1_temp),
 						p2(p2_temp),
 						spring_constant(spring_constant_temp),
@@ -22,6 +23,25 @@ SpringForce::SpringForce(Particle* p1_temp,
     p2->GetPosition(pos2);
     double d = sqrt(pow(pos2[0] - pos1[0], 2) + pow(pos2[1] - pos1[1], 2));
     rest_length *= d;
+    rgba[0] = color[0];
+    rgba[1] = color[1];
+    rgba[2] = color[2];
+    rgba[3] = color[3];
+}
+
+double SpringForce::GetRed()
+{
+    return rgba[0];
+}
+
+double SpringForce::GetGreen()
+{
+    return rgba[1];
+}
+
+double SpringForce::GetBlue()
+{
+    return rgba[2];
 }
 
 void SpringForce::Apply()
