@@ -16,21 +16,12 @@ SpringForce::SpringForce(Particle* p1_temp,
 						damping_constant(damping_constant_temp),
 						rest_length(rest_length_temp)
 {
-	if(rest_length == 0)
-	{
-		double pos1[DIM];
-		double pos2[DIM];
-		p1->GetPosition(pos1);
-		p2->GetPosition(pos2);
-
-		int d;
-		for(d=0; d<DIM; d++)
-		{
-			double dif = pos1[d] - pos2[d];
-			rest_length += dif*dif;
-		}
-		rest_length = sqrt(rest_length);
-	}
+    double pos1[DIM];
+    double pos2[DIM];
+    p1-> GetPosition(pos1);
+    p2->GetPosition(pos2);
+    double d = sqrt(pow(pos2[0] - pos1[0], 2) + pow(pos2[1] - pos1[1], 2));
+    rest_length *= d;
 }
 
 void SpringForce::Apply()
