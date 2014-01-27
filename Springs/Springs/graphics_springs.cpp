@@ -35,6 +35,8 @@ double screen_y = 700;
 
 std::clock_t START;
 double last_update;
+double nParticles;
+double springForceUpdateInterval = .0009;
 
 // The particle system.
 ParticleSystem PS;
@@ -119,12 +121,12 @@ void display(void)
 
     duration = ( std::clock() - START ) / (double) CLOCKS_PER_SEC;
 
-    if ((duration - last_update) >= 0.0009)
+    if ((duration - last_update) >= springForceUpdateInterval)
     {
-        Particle *spider = PS.GetParticle(0);
+        Particle *spider = PS.GetParticle(nParticles - 1);
         Particle *newParticle = new Particle(spider->GetPositionx(), spider->GetPositiony(), 0, 0, .5, true);
         PS.AddParticle(newParticle);
-        if (PS.GetNumParticles() > 2)
+        if (PS.GetNumParticles() > nParticles + 1)
         {
             double color[] = {randomNumberInRange(0, 255)/255, randomNumberInRange(0, 255)/255, randomNumberInRange(0, 255)/255, 1};
             Force *f = new SpringForce(PS.GetParticle(PS.GetNumParticles() - 2), newParticle, 100, 100, 1, color);
@@ -194,12 +196,7 @@ void display(void)
 			SpringForce * sf = (SpringForce*)f;
 			Particle * p1 = sf->GetParticle1();
 			Particle * p2 = sf->GetParticle2();
-            double alpha = 1.0;
-            if (i < NF - 10) {
-                alpha = .05;
-            }
-
-            GLdouble color[] = {sf->GetRed(), sf->GetGreen(), sf->GetBlue(), 0.0};
+            GLdouble color[] = {sf->GetRed(), sf->GetGreen(), sf->GetBlue(), 1.0};
 			glColor3dv(color);
 			DrawLine(p1->GetPositionx(), p1->GetPositiony(),  p2->GetPositionx(), p2->GetPositiony());
 		}
@@ -286,8 +283,18 @@ void mouse(int mouse_button, int state, int x, int y)
 void InitParticles1()
 {
    string klass;
-   string filename = "/Users/nate/school/3600/data.txt";
-   ifstream fin(filename.c_str());
+   string file;
+   cout << "Which file would you like to use? ";
+   cin >> file;
+   bool flower = file.compare("flower.txt") == 0;
+   bool validFile = file.compare("flower.txt") == 0 || file.compare("diamonds.txt") == 0;
+   if (!validFile) {
+       flower = true;
+       file = "flower.txt";
+   }
+   string path = "/Users/nate/school/3600/" + file;
+   nParticles = flower ? 2 : 1;
+   ifstream fin(path.c_str());
    double x, y, xDir, yDir, r_temp, pIndex1, pIndex2,
        spring_constant, damping_constant, rest_length, friction_temp,
        g1, g2, deltaT, red, green, blue, alpha;

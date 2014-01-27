@@ -1,0 +1,6 @@
+particle 450 350 100 100 5 true
+particle 450 400 50 50 5 false
+springForce 1 2 2 0 1 255 255 255 1
+dragForce 0.0 0.1
+gravityForce 0 -.5
+deltaT 1
