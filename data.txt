@@ -1,0 +1,4 @@
+particle 5 695 15 15 5 false
+dragForce 0.0 0.5
+gravityForce 0 -1
+deltaT 1

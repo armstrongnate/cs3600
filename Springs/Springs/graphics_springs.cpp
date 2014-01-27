@@ -11,6 +11,7 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
+#include <ctime>
 using namespace std;
 #include "graphics.h"
 #include "particle.h"
@@ -29,8 +30,11 @@ GLdouble blueMaterial[] = {0.1, 0.2, 0.7, 1.0};
 GLdouble whiteMaterial[] = {1.0, 1.0, 1.0, 1.0};
 GLdouble blackMaterial[] = {0.0, 0.0, 0.0, 1.0};
 
-double screen_x = 1400;
-double screen_y = 960;
+double screen_x = 900;
+double screen_y = 700;
+
+std::clock_t START;
+double last_update;
 
 // The particle system.
 ParticleSystem PS;
@@ -97,6 +101,11 @@ void text_output(double x, double y, char *string)
     glDisable(GL_BLEND);
 }
 
+double randomNumberInRange(double min, double max)
+{
+    return min + (rand() % (int)(max - min + 1));
+}
+
 
 //
 // GLUT callback functions
@@ -106,6 +115,24 @@ void text_output(double x, double y, char *string)
 // system whenever it decides things need to be redrawn.
 void display(void)
 {
+    double duration;
+
+    duration = ( std::clock() - START ) / (double) CLOCKS_PER_SEC;
+
+    if ((duration - last_update) >= 0.0009)
+    {
+        Particle *spider = PS.GetParticle(0);
+        Particle *newParticle = new Particle(spider->GetPositionx(), spider->GetPositiony(), 0, 0, .5, true);
+        PS.AddParticle(newParticle);
+        if (PS.GetNumParticles() > 2)
+        {
+            double color[] = {randomNumberInRange(0, 255)/255, randomNumberInRange(0, 255)/255, randomNumberInRange(0, 255)/255, 1};
+            Force *f = new SpringForce(PS.GetParticle(PS.GetNumParticles() - 2), newParticle, 100, 100, 1, color);
+            PS.AddForce(f);
+        }
+        last_update = duration;
+    }
+
 	int i;
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3dv(whiteMaterial);
@@ -167,7 +194,12 @@ void display(void)
 			SpringForce * sf = (SpringForce*)f;
 			Particle * p1 = sf->GetParticle1();
 			Particle * p2 = sf->GetParticle2();
-            GLdouble color[] = {sf->GetRed(), sf->GetGreen(), sf->GetBlue(), 1.0};
+            double alpha = 1.0;
+            if (i < NF - 10) {
+                alpha = .05;
+            }
+
+            GLdouble color[] = {sf->GetRed(), sf->GetGreen(), sf->GetBlue(), 0.0};
 			glColor3dv(color);
 			DrawLine(p1->GetPositionx(), p1->GetPositiony(),  p2->GetPositionx(), p2->GetPositiony());
 		}
@@ -319,6 +351,8 @@ void InitializeMyStuff()
 
 int main(int argc, char **argv)
 {
+    START = std::clock();
+    last_update = 0;
 	glutInit(&argc, argv);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
