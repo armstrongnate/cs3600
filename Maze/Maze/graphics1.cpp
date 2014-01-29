@@ -90,7 +90,7 @@ void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	gMaze.Draw();
+	gMaze.draw();
 
 	glutSwapBuffers();
 }
