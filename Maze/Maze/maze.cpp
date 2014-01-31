@@ -148,7 +148,7 @@ void Maze::visitCell(int i, int j)
 
         if (sizeI == 0) return;
 
-        int index = randomNumberInRange(0, sizeJ-1);
+        int index = rand() % (int)sizeJ;
         int ni = nextI[index];
         int nj = nextJ[index];
 

@@ -20,8 +20,8 @@
 
 
 // Global Variables (Only what you need!)
-double screen_x = 700;
-double screen_y = 500;
+double screen_x = 1000;
+double screen_y = 800;
 
 Maze gMaze;
 
@@ -162,6 +162,7 @@ void InitializeMyStuff()
 
 int main(int argc, char **argv)
 {
+    srand(time(NULL));
 	glutInit(&argc, argv);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
