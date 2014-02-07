@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <cmath>
 #include <GLUT/GLUT.h>
 
 #include "Rat.h"
@@ -65,9 +66,8 @@ void Rat::setMaze(Maze *maze)
 
 Rat::Rat()
 {
-    this->x = 0;
-    this->y = 0;
-    this->degrees = 0;
+    x = y = 0;
+    degrees = 10;
 }
 
 void Rat::draw()
@@ -85,4 +85,14 @@ void Rat::draw()
     glEnd();
 
     glPopMatrix();
+}
+
+void Rat::move(double dt)
+{
+    std::cout << "in here" << std::endl;
+    double rad = degrees/180.0 * M_PI;
+    double dx = cos(rad) * MOVE_SPEED * dt;
+    double dy = sin(rad) * MOVE_SPEED * dt;
+    x += dx;
+    y += dy;
 }

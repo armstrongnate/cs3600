@@ -93,8 +93,10 @@ void display(void)
 
 	gMaze.draw();
     gRat.draw();
+    gRat.move(.01);
 
 	glutSwapBuffers();
+	glutPostRedisplay();
 }
 
 
