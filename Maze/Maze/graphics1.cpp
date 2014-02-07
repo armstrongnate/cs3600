@@ -14,7 +14,7 @@
 #include <cmath>
 #include <cstring>
 #include <iostream>
-#include "maze.h"
+#include "Rat.h"
 
 #include <GLUT/GLUT.h>
 
@@ -24,6 +24,7 @@ double screen_x = 1000;
 double screen_y = 800;
 
 Maze gMaze;
+Rat gRat;
 
 // 
 // Functions that draw basic primitives
@@ -41,15 +42,15 @@ void DrawCircle(double x1, double y1, double radius)
 	glEnd();
 }
 
-void DrawRectangle(double x1, double y1, double x2, double y2)
-{
-	glBegin(GL_QUADS);
-	glVertex2d(x1,y1);
-	glVertex2d(x2,y1);
-	glVertex2d(x2,y2);
-	glVertex2d(x1,y2);
-	glEnd();
-}
+//void DrawRectangle(double x1, double y1, double x2, double y2)
+//{
+//	glBegin(GL_QUADS);
+//	glVertex2d(x1,y1);
+//	glVertex2d(x2,y1);
+//	glVertex2d(x2,y2);
+//	glVertex2d(x1,y2);
+//	glEnd();
+//}
 
 void DrawTriangle(double x1, double y1, double x2, double y2, double x3, double y3)
 {
@@ -91,6 +92,7 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	gMaze.draw();
+    gRat.draw();
 
 	glutSwapBuffers();
 }
