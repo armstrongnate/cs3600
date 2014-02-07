@@ -11,6 +11,7 @@
 		432ACA2E1898A08E0040C900 /* maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 432ACA2B1898A08E0040C900 /* maze.cpp */; };
 		432ACA301898A0EE0040C900 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 432ACA2F1898A0EE0040C900 /* GLUT.framework */; };
 		432ACA321898A1820040C900 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 432ACA311898A1820040C900 /* OpenGL.framework */; };
+		43F8470A18A47FA9004DC9A6 /* Rat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F8470818A47FA9004DC9A6 /* Rat.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +33,8 @@
 		432ACA2C1898A08E0040C900 /* maze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maze.h; sourceTree = "<group>"; };
 		432ACA2F1898A0EE0040C900 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		432ACA311898A1820040C900 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		43F8470818A47FA9004DC9A6 /* Rat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rat.cpp; sourceTree = "<group>"; };
+		43F8470918A47FA9004DC9A6 /* Rat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rat.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +74,8 @@
 				432ACA2A1898A08E0040C900 /* graphics1.cpp */,
 				432ACA2B1898A08E0040C900 /* maze.cpp */,
 				432ACA2C1898A08E0040C900 /* maze.h */,
+				43F8470818A47FA9004DC9A6 /* Rat.cpp */,
+				43F8470918A47FA9004DC9A6 /* Rat.h */,
 			);
 			path = Maze;
 			sourceTree = "<group>";
@@ -126,6 +131,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43F8470A18A47FA9004DC9A6 /* Rat.cpp in Sources */,
 				432ACA2D1898A08E0040C900 /* graphics1.cpp in Sources */,
 				432ACA2E1898A08E0040C900 /* maze.cpp in Sources */,
 			);
@@ -235,6 +241,7 @@
 				432ACA2918989FC50040C900 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
