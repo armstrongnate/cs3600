@@ -162,7 +162,6 @@ void InitializeMyStuff()
 
 int main(int argc, char **argv)
 {
-    srand(time(NULL));
 	glutInit(&argc, argv);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);

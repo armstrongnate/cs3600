@@ -1,5 +1,6 @@
 #include "maze.h"
 #include <cstdlib>
+#include <iostream>
 #include <GLUT/GLUT.h>
 
 int randomNumberInRange(int min, int max)
@@ -110,6 +111,7 @@ void Maze::draw()
 
 Maze::Maze()
 {
+    srand(time(NULL));
 	// Carve out the cell walls.
     visitCell(0, 0);
     cells[0][0].setBottom(false);
