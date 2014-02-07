@@ -33,7 +33,8 @@ class Maze
 public:
 	Maze();
 	void draw();
+    bool isLegal(double x, double y, double r);
 private:
-    void visitCell(int i, int j);
 	Cell cells[M][N];
+    void visitCell(int i, int j);
 };

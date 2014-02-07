@@ -34,7 +34,6 @@ public:
 private:
     double x, y, degrees;
     Maze *maze;
-    
 };
 
 #endif /* defined(__Maze__Rat__) */

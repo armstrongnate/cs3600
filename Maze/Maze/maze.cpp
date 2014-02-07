@@ -179,3 +179,33 @@ void Maze::visitCell(int i, int j)
     }
 
 }
+
+bool Maze::isLegal(double x, double y, double r)
+{
+    int cellx = (int)x;
+    int celly = (int)y;
+    double offsetx = x - cellx;
+    double offsety = y - celly;
+    Cell cell = cells[cellx][celly];
+
+    // wall tests
+    if ((cell.getLeft() && offsetx - r < 0) ||
+        (cell.getRight() && offsetx + r > 1) ||
+        (cell.getBottom() && offsety - r < 0) ||
+        (cell.getTop() && offsety + r > 1))
+        {
+            return false;
+        }
+
+
+    // corner tests
+    if ((offsetx + r > 1 && offsety - r < 0) || // bottom right
+        (offsetx - r < 0 && offsety - r < 0) || // bottom left
+        (offsetx - r < 0 && offsety + r > 1) || // top left
+        (offsetx +r > 1 && offsety +r > 1)) // top right
+        {
+            return false;
+        }
+
+    return true;
+}

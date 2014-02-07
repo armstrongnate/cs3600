@@ -191,6 +191,7 @@ void mouse(int mouse_button, int state, int x, int y)
 // Your initialization code goes here.
 void InitializeMyStuff()
 {
+    gRat.setMaze(&gMaze);
 }
 
 

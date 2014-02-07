@@ -91,8 +91,20 @@ void Rat::move(double dt)
     double rad = degrees/180.0 * M_PI;
     double dx = cos(rad) * MOVE_SPEED * dt;
     double dy = sin(rad) * MOVE_SPEED * dt;
-    x += dx;
-    y += dy;
+    double r = .25;
+    if (maze->isLegal(x + dx, y + dy, r))
+    {
+        x += dx;
+        y += dy;
+    }
+    else if (maze->isLegal(x+dx, y, r))
+    {
+        x += dx;
+    }
+    else if (maze->isLegal(x, y+dy, r))
+    {
+        y += dy;
+    }
 }
 
 void Rat::spinLeft(double dt)
