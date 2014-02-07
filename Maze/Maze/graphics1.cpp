@@ -22,9 +22,24 @@
 // Global Variables (Only what you need!)
 double screen_x = 1000;
 double screen_y = 800;
+bool gLeft, gMiddle, gRight;
 
 Maze gMaze;
 Rat gRat;
+
+double GetDeltaTime()
+{
+	static clock_t start_time = clock();
+	static int current_frame = 0;
+	clock_t current_time = clock();
+	current_frame += 1;
+	double total_time = double(current_time - start_time)/CLOCKS_PER_SEC;
+	if (total_time == 0)
+		total_time = .00001;
+	double frames_per_second = (double)current_frame / total_time;
+	double DT = 1.0 / frames_per_second;
+	return DT;
+}
 
 // 
 // Functions that draw basic primitives
@@ -93,7 +108,10 @@ void display(void)
 
 	gMaze.draw();
     gRat.draw();
-    gRat.move(.01);
+    double dt = GetDeltaTime();
+    if (gLeft) gRat.spinLeft(dt);
+    if (gRight) gRat.spinRight(dt);
+    if (gMiddle) gRat.move(dt);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -145,15 +163,27 @@ void mouse(int mouse_button, int state, int x, int y)
 {
 	if (mouse_button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) 
 	{
+        gLeft = true;
 	}
 	if (mouse_button == GLUT_LEFT_BUTTON && state == GLUT_UP) 
 	{
+        gLeft = false;
 	}
 	if (mouse_button == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN) 
 	{
+        gMiddle = true;
 	}
 	if (mouse_button == GLUT_MIDDLE_BUTTON && state == GLUT_UP) 
 	{
+        gMiddle = false;
+	}
+    if (mouse_button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+	{
+        gRight = true;
+	}
+    if (mouse_button == GLUT_RIGHT_BUTTON && state == GLUT_UP)
+	{
+        gRight = false;
 	}
 	glutPostRedisplay();
 }

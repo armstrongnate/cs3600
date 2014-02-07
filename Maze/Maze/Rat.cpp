@@ -66,8 +66,8 @@ void Rat::setMaze(Maze *maze)
 
 Rat::Rat()
 {
-    x = y = 0;
-    degrees = 10;
+    x = y = .5;
+    degrees = 0;
 }
 
 void Rat::draw()
@@ -75,13 +75,12 @@ void Rat::draw()
     glPushMatrix(); // the following changes should happen to a copy.
 
     glTranslated(x, y, 0); // translate to its actual position.
-    glTranslated(.5, .5, 0); // put it back where it was.
     glRotated(degrees, 0, 0, 1); // `degrees` will be the `direction` if it is stored in degrees.
     glScaled(.5, .5, 1); // have a variable that is the scale of the rat.
-    glTranslated(-.5, -.5, 0);
+    glTranslated(-x, -y, 0);
 
     glBegin(GL_POLYGON); // draw the rat
-    DrawRectangle(x, y, x + 1, y + 1);
+    DrawRectangle(x - .5, y - .5, x + .5, y + .5);
     glEnd();
 
     glPopMatrix();
@@ -89,10 +88,19 @@ void Rat::draw()
 
 void Rat::move(double dt)
 {
-    std::cout << "in here" << std::endl;
     double rad = degrees/180.0 * M_PI;
     double dx = cos(rad) * MOVE_SPEED * dt;
     double dy = sin(rad) * MOVE_SPEED * dt;
     x += dx;
     y += dy;
+}
+
+void Rat::spinLeft(double dt)
+{
+    degrees += SPIN_SPEED * dt * 360;
+}
+
+void Rat::spinRight(double dt)
+{
+    degrees -= SPIN_SPEED * dt * 360;
 }

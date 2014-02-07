@@ -11,8 +11,8 @@
 
 #include "maze.h"
 
-const double MOVE_SPEED = .5;
-const double SPIN_SPEED = .3;
+const double MOVE_SPEED = 150;
+const double SPIN_SPEED = 25;
 
 class Rat
 {
@@ -29,6 +29,7 @@ public:
     void draw();
     void move(double dt);
     void spinLeft(double dt);
+    void spinRight(double dt);
 
 private:
     double x, y, degrees;
