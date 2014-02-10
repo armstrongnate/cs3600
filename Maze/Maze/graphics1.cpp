@@ -104,7 +104,12 @@ void DrawText(double x, double y, char *string)
 // system whenever it decides things need to be redrawn.
 void display(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+
+    glLoadIdentity();
+    gluLookAt(M*.5, -N*.5, 15, M*.5, N*.5, 0, 0, 0, 1); // 3 eye, 3 at point, 3 z-axis up
+    // when doing rat, calculate at point but z will stay.
 
 	gMaze.draw();
     gRat.draw();
@@ -152,7 +157,8 @@ void reshape(int w, int h)
 	// Set the projection mode to 2D orthographic, and set the world coordinates:
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(-.5, M+.5, -.5, N+.5);
+//	gluOrtho2D(-.5, M+.5, -.5, N+.5);
+    gluPerspective(40, (double)w/h, N*.5, 3*(M+N));
 	glMatrixMode(GL_MODELVIEW);
 
 }
@@ -199,7 +205,7 @@ int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(screen_x, screen_y);
 	glutInitWindowPosition(50, 50);
 

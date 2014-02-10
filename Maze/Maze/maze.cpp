@@ -62,11 +62,14 @@ bool Maze::Cell::getBottom()
 
 void Maze::Cell::draw(int i, int j)
 {
+    glColor3ub(i*2342423%255, j*2234232342%255, 128);
     if (bottom)
     {
-        glBegin(GL_LINES);
-        glVertex2d(i, j);
-        glVertex2d(i+1, j);
+        glBegin(GL_QUADS);
+        glVertex3d(i, j, 0);
+        glVertex3d(i+1, j, 0);
+        glVertex3d(i+1, j, 1);
+        glVertex3d(i, j, 1);
         glEnd();
     }
     if (right)
