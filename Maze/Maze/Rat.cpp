@@ -70,7 +70,7 @@ Rat::Rat()
     degrees = 0;
 }
 
-void Rat::draw()
+void Rat::draw(double invisible)
 {
     glPushMatrix(); // the following changes should happen to a copy.
 
@@ -78,6 +78,7 @@ void Rat::draw()
     glRotated(degrees, 0, 0, 1); // `degrees` will be the `direction` if it is stored in degrees.
     glScaled(.5, .5, 1); // have a variable that is the scale of the rat.
     glTranslated(-x, -y, 0);
+    if (invisible) { glColor3ub(255, 255, 255); }
 
     glBegin(GL_POLYGON); // draw the rat
     DrawRectangle(x - .5, y - .5, x + .5, y + .5);

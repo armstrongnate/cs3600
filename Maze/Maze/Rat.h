@@ -26,7 +26,7 @@ public:
     void setX(double x);
     void setY(double y);
     void setDegrees(double degrees);
-    void draw();
+    void draw(double invisible);
     void move(double dt);
     void spinLeft(double dt);
     void spinRight(double dt);

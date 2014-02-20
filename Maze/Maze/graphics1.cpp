@@ -22,7 +22,7 @@
 // Global Variables (Only what you need!)
 double screen_x = 1000;
 double screen_y = 800;
-bool gLeft, gMiddle, gRight;
+bool gLeft, gMiddle, gRight, gFirstPerson;
 
 Maze gMaze;
 Rat gRat;
@@ -108,15 +108,34 @@ void display(void)
     glEnable(GL_DEPTH_TEST);
 
     glLoadIdentity();
-    gluLookAt(M*.5, -N*.5, 15, M*.5, N*.5, 0, 0, 0, 1); // 3 eye, 3 at point, 3 z-axis up
-    // when doing rat, calculate at point but z will stay.
+    double dt = GetDeltaTime();
+    if (gFirstPerson)
+    {
+        double rad = gRat.getDegrees()/180.0 * M_PI;
+        double dx = cos(rad) * MOVE_SPEED * dt;
+        double dy = sin(rad) * MOVE_SPEED * dt;
+        gluLookAt(gRat.getX(), gRat.getY(), .04, gRat.getX() + dx, gRat.getY() + dy, .04, 0, 0, 1);
+        // when doing rat, calculate at point but z will stay.
+    }
+    else
+    {
+        gluLookAt(M*.5, -N*.5, 15, M*.5, N*.5, 0, 0, 0, 1); // 3 eye, 3 at point, 3 z-axis up
+    }
 
 	gMaze.draw();
-    gRat.draw();
-    double dt = GetDeltaTime();
+    gRat.draw(gFirstPerson);
     if (gLeft) gRat.spinLeft(dt);
     if (gRight) gRat.spinRight(dt);
     if (gMiddle) gRat.move(dt);
+
+    if (gFirstPerson)
+    {
+        gluPerspective(.02, (double)screen_x/screen_y, .0001, .0001);
+    }
+    else
+    {
+        gluPerspective(40, (double)screen_x/screen_y, N*.5, 3*(M+N));
+    }
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -135,6 +154,9 @@ void keyboard(unsigned char c, int x, int y)
 		case 'b':
 			// do something when 'b' character is hit.
 			break;
+        case '1':
+            gFirstPerson = !gFirstPerson;
+            break;
 		default:
 			return; // if we don't care, return without glutPostRedisplay()
 	}
@@ -158,7 +180,14 @@ void reshape(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 //	gluOrtho2D(-.5, M+.5, -.5, N+.5);
-    gluPerspective(40, (double)w/h, N*.5, 3*(M+N));
+    if (gFirstPerson)
+    {
+        gluPerspective(60, (double)w/h, .0001, M*N);
+    }
+    else
+    {
+        gluPerspective(40, (double)w/h, N*.5, 3*(M+N));
+    }
 	glMatrixMode(GL_MODELVIEW);
 
 }
@@ -198,6 +227,7 @@ void mouse(int mouse_button, int state, int x, int y)
 void InitializeMyStuff()
 {
     gRat.setMaze(&gMaze);
+    gFirstPerson = true;
 }
 
 

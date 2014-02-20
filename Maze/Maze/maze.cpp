@@ -62,7 +62,7 @@ bool Maze::Cell::getBottom()
 
 void Maze::Cell::draw(int i, int j)
 {
-    glColor3ub(i*2342423%255, j*2234232342%255, 128);
+    glColor3ub(i*2342423%255, j*2234232342%255, j*i*128%255);
     if (bottom)
     {
         glBegin(GL_QUADS);
@@ -74,37 +74,35 @@ void Maze::Cell::draw(int i, int j)
     }
     if (right)
     {
-        glBegin(GL_LINES);
-        glVertex2d(i+1, j);
-        glVertex2d(i+1, j+1);
+        glBegin(GL_QUADS);
+        glVertex3d(i+1, j, 0);
+        glVertex3d(i+1, j+1, 0);
+        glVertex3d(i+1, j+1, 1);
+        glVertex3d(i+1, j, 1);
         glEnd();
     }
     if (top)
     {
-        glBegin(GL_LINES);
-        glVertex2d(i+1, j+1);
-        glVertex2d(i, j+1);
+        glBegin(GL_QUADS);
+        glVertex3d(i+1, j+1, 0);
+        glVertex3d(i, j+1, 0);
+        glVertex3d(i, j+1, 1);
+        glVertex3d(i+1, j+1, 1);
         glEnd();
     }
     if (left)
     {
-        glBegin(GL_LINES);
-        glVertex2d(i, j+1);
-        glVertex2d(i, j);
+        glBegin(GL_QUADS);
+        glVertex3d(i, j+1, 0);
+        glVertex3d(i, j, 0);
+        glVertex3d(i, j, 1);
+        glVertex3d(i, j+1, 1);
         glEnd();
     }
 }
 
 void Maze::draw()
 {
-	/*
-	glBegin(GL_LINE_LOOP);
-	glVertex2d(0,0);
-	glVertex2d(M,0);
-	glVertex2d(M,N);
-	glVertex2d(0,N);
-	glEnd();
-	*/
 	for(int i=0; i<M; i++)
 		for(int j=0; j<N; j++)
 		{
