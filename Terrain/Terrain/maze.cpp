@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <GLUT/GLUT.h>
+#include <cmath>
 
 int randomNumberInRange(int min, int max)
 {
@@ -101,84 +102,41 @@ void Maze::Cell::draw(int i, int j)
     }
 }
 
+double zAtCell(double x, double y)
+{
+    return sin(y*.23423) + cos(x*.23423421) + sin(x*.234231) * cos(y*.234456);
+}
+
 void Maze::draw()
 {
-	for(int i=0; i<M; i++)
-		for(int j=0; j<N; j++)
-		{
-			cells[i][j].draw(i,j);
-		}
+    double zValues[RES+1][RES+1];
+    for (int i=0; i<RES+1; i++)
+    {
+        for (int j=0; j<RES+1; j++)
+        {
+            zValues[i][j] = zAtCell(i, j);
+        }
+    }
+
+    for (int i=0; i<RES-1; i++)
+    {
+        for (int j=0; j<RES-1; j++)
+        {
+            glColor3ub(i*2342423%255, j*2234232342%255, j*i*128%255);
+//            double z = zValues[i][j];
+            glBegin(GL_QUADS);
+            glVertex3d(i, j, zValues[i][j]);
+            glVertex3d(i+1, j, zValues[i+1][j]);
+            glVertex3d(i+1, j+1, zValues[i+1][j+1]);
+            glVertex3d(i, j+1, zValues[i][j+1]);
+            glEnd();
+        }
+    }
 }
 
 Maze::Maze()
 {
     srand(time(NULL));
-	// Carve out the cell walls.
-    visitCell(0, 0);
-    cells[0][0].setBottom(false);
-    cells[M-1][N-1].setTop(false);
-}
-
-void Maze::visitCell(int i, int j)
-{
-    cells[i][j].setVisited(true);
-    while (true)
-    {
-        int nextI[M * N];
-        int nextJ[M * N];
-        size_t sizeI = 0;
-        size_t sizeJ = 0;
-        if (i > 0 && !cells[i-1][j].getVisited())
-        {
-            nextI[sizeI++] = i-1;
-            nextJ[sizeJ++] = j;
-        }
-        if (i < M-1 && !cells[i+1][j].getVisited())
-        {
-            nextI[sizeI++] = i+1;
-            nextJ[sizeJ++] = j;
-        }
-        if (j > 0 && !cells[i][j-1].getVisited())
-        {
-            nextI[sizeI++] = i;
-            nextJ[sizeJ++] = j-1;
-        }
-        if (j < N-1 && !cells[i][j+1].getVisited())
-        {
-            nextI[sizeI++] = i;
-            nextJ[sizeJ++] = j+1;
-        }
-
-        if (sizeI == 0) return;
-
-        int index = rand() % (int)sizeJ;
-        int ni = nextI[index];
-        int nj = nextJ[index];
-
-        if (ni == i+1)
-        {
-            cells[i][j].setRight(false);
-            cells[i+1][j].setLeft(false);
-        }
-        if (ni == i-1)
-        {
-            cells[i][j].setLeft(false);
-            cells[i-1][j].setRight(false);
-        }
-        if (nj == j-1)
-        {
-            cells[i][j].setBottom(false);
-            cells[i][j-1].setTop(false);
-        }
-        if (nj == j+1)
-        {
-            cells[i][j].setTop(false);
-            cells[i][j+1].setBottom(false);
-        }
-
-        this->visitCell(ni, nj);
-    }
-
 }
 
 bool Maze::isLegal(double x, double y, double r)

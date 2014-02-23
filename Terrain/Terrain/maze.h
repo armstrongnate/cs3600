@@ -3,8 +3,9 @@
 // (Your name here)
 
 // The maze will be M by N cells big.
-const int M = 7;
-const int N = 7;
+const int M = 50;
+const int N = 50;
+const int RES = 50;
 class Maze
 {
 	struct Cell

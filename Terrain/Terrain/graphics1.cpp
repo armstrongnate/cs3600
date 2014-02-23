@@ -134,7 +134,7 @@ void display(void)
     }
     else
     {
-        gluPerspective(40, (double)screen_x/screen_y, N*.5, 3*(M+N));
+        gluPerspective(40, (double)screen_x/screen_y, RES*.5, 3*(RES+RES));
     }
 
 	glutSwapBuffers();
@@ -227,7 +227,7 @@ void mouse(int mouse_button, int state, int x, int y)
 void InitializeMyStuff()
 {
     gRat.setMaze(&gMaze);
-    gFirstPerson = true;
+    gFirstPerson = false;
 }
 
 

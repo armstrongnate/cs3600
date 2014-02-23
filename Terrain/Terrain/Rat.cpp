@@ -93,6 +93,9 @@ void Rat::move(double dt)
     double dx = cos(rad) * MOVE_SPEED * dt;
     double dy = sin(rad) * MOVE_SPEED * dt;
     double r = .25;
+    x += dx;
+    y += dy;
+    return;
     if (maze->isLegal(x + dx, y + dy, r))
     {
         x += dx;
