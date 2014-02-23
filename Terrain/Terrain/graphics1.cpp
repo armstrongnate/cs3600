@@ -114,7 +114,11 @@ void display(void)
         double rad = gRat.getDegrees()/180.0 * M_PI;
         double dx = cos(rad) * MOVE_SPEED * dt;
         double dy = sin(rad) * MOVE_SPEED * dt;
-        gluLookAt(gRat.getX(), gRat.getY(), .04, gRat.getX() + dx, gRat.getY() + dy, .04, 0, 0, 1);
+
+        double hover = 1;
+        double terrainHeight = gMaze.getZ(gRat.getX() + dx, gRat.getY() + dy);
+
+        gluLookAt(gRat.getX(), gRat.getY(), hover + terrainHeight, gRat.getX() + dx, gRat.getY() + dy, terrainHeight + hover, 0, 0, 1);
         // when doing rat, calculate at point but z will stay.
     }
     else
@@ -227,7 +231,7 @@ void mouse(int mouse_button, int state, int x, int y)
 void InitializeMyStuff()
 {
     gRat.setMaze(&gMaze);
-    gFirstPerson = false;
+    gFirstPerson = true;
 }
 
 

@@ -102,7 +102,7 @@ void Maze::Cell::draw(int i, int j)
     }
 }
 
-double zAtCell(double x, double y)
+double Maze::getZ(double x, double y)
 {
     return sin(y*.23423) + cos(x*.23423421) + sin(x*.234231) * cos(y*.234456);
 }
@@ -114,7 +114,7 @@ void Maze::draw()
     {
         for (int j=0; j<RES+1; j++)
         {
-            zValues[i][j] = zAtCell(i, j);
+            zValues[i][j] = getZ(i, j);
         }
     }
 

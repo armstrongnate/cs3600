@@ -5,7 +5,7 @@
 // The maze will be M by N cells big.
 const int M = 50;
 const int N = 50;
-const int RES = 50;
+const int RES = 100;
 class Maze
 {
 	struct Cell
@@ -34,6 +34,7 @@ class Maze
 public:
 	Maze();
 	void draw();
+    double getZ(double x, double y);
     bool isLegal(double x, double y, double r);
 private:
 	Cell cells[M][N];
