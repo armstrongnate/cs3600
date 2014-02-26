@@ -104,7 +104,7 @@ void Maze::Cell::draw(int i, int j)
 
 double Maze::getZ(double x, double y)
 {
-    return sin(y*.23423) + cos(x*.23423421) + sin(x*.234231) * cos(y*.234456);
+    return (y * .03 * sin(y * .09)) + (.221 * y * cos(x*.09)) + ( .9 * sin(x*.432)) * (x * .03 + cos(y*.32324));
 }
 
 void Maze::draw()
@@ -122,13 +122,24 @@ void Maze::draw()
     {
         for (int j=0; j<RES-1; j++)
         {
+//            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//            glEnable(GL_BLEND);
+
             glColor3ub(i*2342423%255, j*2234232342%255, j*i*128%255);
-//            double z = zValues[i][j];
             glBegin(GL_QUADS);
             glVertex3d(i, j, zValues[i][j]);
             glVertex3d(i+1, j, zValues[i+1][j]);
             glVertex3d(i+1, j+1, zValues[i+1][j+1]);
             glVertex3d(i, j+1, zValues[i][j+1]);
+            glEnd();
+
+            glColor4ub(0, 0, 255, 1.0);
+            double waterZ = -1.9;
+            glBegin(GL_QUADS);
+            glVertex3d(i, j, waterZ);
+            glVertex3d(i+1, j, waterZ);
+            glVertex3d(i+1, j+1, waterZ);
+            glVertex3d(i, j+1, waterZ);
             glEnd();
         }
     }

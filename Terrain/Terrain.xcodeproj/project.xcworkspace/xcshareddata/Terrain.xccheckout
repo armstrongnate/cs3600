@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>62862860-E3E1-4578-B028-098994E298CC</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Terrain</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>F8FE0403-8595-4D99-AF4D-D570EF00146B</key>
+		<string>ssh://github.com/n8armstrong/cs3600.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Terrain/Terrain.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>F8FE0403-8595-4D99-AF4D-D570EF00146B</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/n8armstrong/cs3600.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>F8FE0403-8595-4D99-AF4D-D570EF00146B</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F8FE0403-8595-4D99-AF4D-D570EF00146B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>3600</string>
+		</dict>
+	</array>
+</dict>
+</plist>

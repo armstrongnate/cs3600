@@ -115,10 +115,14 @@ void display(void)
         double dx = cos(rad) * MOVE_SPEED * dt;
         double dy = sin(rad) * MOVE_SPEED * dt;
 
-        double hover = 1;
+        double hover = 2.0;
         double terrainHeight = gMaze.getZ(gRat.getX() + dx, gRat.getY() + dy);
-
-        gluLookAt(gRat.getX(), gRat.getY(), hover + terrainHeight, gRat.getX() + dx, gRat.getY() + dy, terrainHeight + hover, 0, 0, 1);
+        double waterHeight = -1.5;
+        double H = fmax(terrainHeight, waterHeight) + hover;
+        double currentTerrainHeight = fmax(waterHeight, gMaze.getZ(gRat.getX(), gRat.getY()));
+        double tilt = (fmax(terrainHeight, waterHeight) - currentTerrainHeight);
+        double lookZ = H + tilt;
+        gluLookAt(gRat.getX(), gRat.getY(), H, gRat.getX() + dx, gRat.getY() + dy, lookZ, 0, 0, 1);
         // when doing rat, calculate at point but z will stay.
     }
     else
