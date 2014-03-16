@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>32CE8603-144C-47A8-B34C-D1D466827997</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Chess</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>91AF0E27-04C2-42CD-829C-73B28D0200B4</key>
+		<string>ssh://github.com/n8armstrong/cs3600.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Chess/Chess.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>91AF0E27-04C2-42CD-829C-73B28D0200B4</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/n8armstrong/cs3600.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>91AF0E27-04C2-42CD-829C-73B28D0200B4</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>91AF0E27-04C2-42CD-829C-73B28D0200B4</string>
+			<key>IDESourceControlWCCName</key>
+			<string>3600</string>
+		</dict>
+	</array>
+</dict>
+</plist>
