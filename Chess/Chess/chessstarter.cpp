@@ -22,8 +22,17 @@ GLdouble brightGreenMaterial[] = {0.1, 0.9, 0.1, 1.0};
 GLdouble blueMaterial[] = {0.1, 0.2, 0.7, 1.0};
 GLdouble whiteMaterial[] = {1.0, 1.0, 1.0, 1.0};
 
-double screen_x = 600;
-double screen_y = 500;
+double screen_x = 700;
+double screen_y = 700;
+
+enum piece_numbers {
+    pawn = 100,
+    knight,
+    rook,
+    bishop,
+    queen,
+    king
+};
 
 
 // Outputs a string of text at the specified location.
@@ -127,9 +136,81 @@ void DrawPiece(char filename[])
 
 }
 
+void DrawBoard()
+{
+//    glBegin(GL_QUADS);
+//    glVertex3d(0, -1000, 0);
+//    glVertex3d(0, -1000, 9000);
+//    glVertex3d(9000, -1000, 9000);
+//    glVertex3d(9000, -1000, 0);
+//    glEnd();
+    GLfloat checker_dark[] = {0.0, 0.0, 0.0, 1.0};
+    GLfloat checker_light[] = {1.0, 1.0, 1.0, 1.0};
+    bool oddCol = false;
+    bool oddRow = false;
+    for (int row=500; row<8000; row+=1000)
+    {
+        for (int col=500; col<8000; col+=1000)
+        {
+            if (!oddRow)
+            {
+                // even row
+                if (!oddCol)
+                {
+                    // even col
+                    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, checker_light);
+
+                }
+                else
+                {
+                    // odd col
+                    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, checker_dark);
+                }
+            }
+            else
+            {
+                // odd row
+                if (!oddCol)
+                {
+                    // even col
+                    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, checker_dark);
+
+                }
+                else
+                {
+                    // odd col
+                    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, checker_light);
+                }
+            }
+            glBegin(GL_QUADS);
+            glVertex3d(col, 0, row);
+            glVertex3d(col, 0, row + 1000);
+            glVertex3d(col + 1000, 0, row + 1000);
+            glVertex3d(col + 1000, 0, row);
+            glEnd();
+
+            oddCol = !oddCol;
+        }
+        oddRow = !oddRow;
+    }
+}
+
 // NOTE: Y is the UP direction for the chess pieces.
-double eye[3] = {4500, 8000, -4000}; // pick a nice vantage point.
-double at[3]  = {4500, 0,     4000};
+double eye[3] = {4500, 12000, -8000}; // pick a nice vantage point.
+double at[3]  = {4500, 0, 4000};
+
+void Interpolate(double t, double t1, double t2, double &x, double &y, double &z, double x1, double y1, double z1, double x2, double y2, double z2)
+{
+    double r = (t-t1)/(t2-t1);
+    if (r < 0)
+        r = 0;
+    if (r > 1)
+        r = 1;
+    x = x1 + (x2-x1) * r;
+    y = y1 + (y2-y1) * r;
+    z = z1 + (z2-z1) * r;
+}
+
 //
 // GLUT callback functions
 //
@@ -138,6 +219,10 @@ double at[3]  = {4500, 0,     4000};
 // system whenever it decides things need to be redrawn.
 void display(void)
 {
+    static clock_t start_time = clock();
+    clock_t current_time = clock();
+    double t = double(current_time - start_time)/ CLOCKS_PER_SEC;
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
@@ -146,45 +231,186 @@ void display(void)
 	// Set the color for one side (white), and draw its 16 pieces.
 	GLfloat mat_amb_diff1[] = {0.8, 0.9, 0.5, 1.0};
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff1);
+    double x, y, z;
+
+    DrawBoard();
+
+    glPushMatrix();
+	glTranslatef(1000, 0, 1000);
+	glCallList(rook);
+	glPopMatrix();
+
+    glPushMatrix();
+	glTranslatef(2000, 0, 1000);
+	glCallList(knight);
+	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(3000, 0, 1000);
-	DrawPiece("/Users/nate/school/3600/Chess/Chess/BISHOP.POL");
+	glCallList(bishop);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(4000, 0, 1000);
-	DrawPiece("/Users/nate/school/3600/Chess/Chess/KING.POL");
+	glCallList(king);
 	glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(5000, 0, 1000);
-	DrawPiece("/Users/nate/school/3600/Chess/Chess/QUEEN.POL");
+    // 6 white queen
+    Interpolate(t, 2.7, 3.0,
+                x, y, z,
+                5000, 0, 1000,
+                5000, 0, 2000);
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    glCallList(queen);
+    glPopMatrix();
+
+    // 4 green bishop
+    Interpolate(t, 1.7, 2.0,
+                x, y, z,
+                6000, 0, 1000,
+                3000, 0, 4000);
+    if (z < 4000)
+    {
+        glPushMatrix();
+        glTranslatef(x, y, z);
+        glCallList(bishop);
+        glPopMatrix();
+    }
+    else
+    {
+        Interpolate(t, 3.4, 3.7,
+                    x, y, z,
+                    3000, 0, 4000,
+                    0, 0, 4000);
+        glPushMatrix();
+        glTranslatef(x, y, z);
+        glCallList(bishop);
+        glPopMatrix();
+    }
+
+    glPushMatrix();
+	glTranslatef(7000, 0, 1000);
+	glCallList(knight);
 	glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(6000, 0, 1000);
-	DrawPiece("/Users/nate/school/3600/Chess/Chess/BISHOP.POL");
+    glPushMatrix();
+	glTranslatef(8000, 0, 1000);
+	glCallList(rook);
 	glPopMatrix();
 
 	// Set the color for one side (black), and draw its 16 pieces.
 	GLfloat mat_amb_diff2[] = {0.1, 0.5, 0.8, 1.0};
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff2);
 
+    glPushMatrix();
+	glTranslatef(1000, 0, 8000);
+	glCallList(rook);
+	glPopMatrix();
+
+    glPushMatrix();
+	glTranslatef(2000, 0, 8000);
+	glCallList(knight);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(3000, 0, 8000);
+	glCallList(bishop);
+	glPopMatrix();
+
 	glPushMatrix();
 	glTranslatef(4000, 0, 8000);
-	DrawPiece("/Users/nate/school/3600/Chess/Chess/KING.POL");
+	glCallList(king);
+	glPopMatrix();
+
+    // 5 blue queen
+    Interpolate(t, 2.2, 2.5,
+                x, y, z,
+                5000, 0, 8000,
+                5000, 0, 6000);
+    if (z > 6000)
+    {
+        glPushMatrix();
+        glTranslatef(x, y, z);
+        glCallList(queen);
+        glPopMatrix();
+    }
+    else
+    {
+        Interpolate(t, 3.2, 3.5,
+                    x, y, z,
+                    5000, 0, 6000,
+                    3000, 0, 4000);
+        glPushMatrix();
+        glTranslatef(x, y, z);
+        glCallList(queen);
+        glPopMatrix();
+    }
+
+    // 3 blue bishop
+    Interpolate(t, 1.2, 1.5,
+                x, y, z,
+                6000, 0, 8000,
+                1000, 0, 3000);
+	glPushMatrix();
+	glTranslatef(x, y, z);
+	glCallList(bishop);
+	glPopMatrix();
+
+    glPushMatrix();
+	glTranslatef(7000, 0, 8000);
+	glCallList(knight);
+	glPopMatrix();
+
+    glPushMatrix();
+	glTranslatef(8000, 0, 8000);
+	glCallList(rook);
 	glPopMatrix();
 
 	for(int x=1000; x<=8000; x+=1000)
 	{
-		glPushMatrix();
-		glTranslatef(x, 0, 7000);
-		DrawPiece("/Users/nate/school/3600/Chess/Chess/PAWN.POL");
-		glPopMatrix();
+        if (!(x == 5000))
+        {
+            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff2);
+            glPushMatrix();
+            glTranslatef(x, 0, 7000);
+            glCallList(pawn);
+            glPopMatrix();
+
+            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff1);
+            glPushMatrix();
+            glTranslatef(x, 0, 2000);
+            glCallList(pawn);
+            glPopMatrix();
+        }
 	}
 
+    // 2 green pawn
+    Interpolate(t, .7, 1.0,
+                x, y, z,
+                5000, 0, 2000,
+                5000, 0, 4000);
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff1);
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    glCallList(pawn);
+    glPopMatrix();
+
+    // 1 blue pawn
+    Interpolate(t, .2, .5,
+                x, y, z,
+                5000, 0, 7000,
+                5000, 0, 5000);
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff2);
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    glCallList(pawn);
+    glPopMatrix();
+
 	glutSwapBuffers();
+    glutPostRedisplay();
 }
 
 
@@ -271,6 +497,30 @@ void InitializeMyStuff()
 	glEnable(GL_DEPTH_TEST); // turn on depth buffering
 	glEnable(GL_LIGHTING);	// enable general lighting
 	glEnable(GL_LIGHT0);	// enable the first light.
+
+    glNewList(pawn, GL_COMPILE);
+    DrawPiece("/Users/nate/school/3600/Chess/Chess/PAWN.POL");
+    glEndList();
+
+    glNewList(knight, GL_COMPILE);
+    DrawPiece("/Users/nate/school/3600/Chess/Chess/KNIGHT.POL");
+    glEndList();
+
+    glNewList(rook, GL_COMPILE);
+    DrawPiece("/Users/nate/school/3600/Chess/Chess/ROOK.POL");
+    glEndList();
+
+    glNewList(bishop, GL_COMPILE);
+    DrawPiece("/Users/nate/school/3600/Chess/Chess/BISHOP.POL");
+    glEndList();
+
+    glNewList(queen, GL_COMPILE);
+    DrawPiece("/Users/nate/school/3600/Chess/Chess/QUEEN.POL");
+    glEndList();
+
+    glNewList(king, GL_COMPILE);
+    DrawPiece("/Users/nate/school/3600/Chess/Chess/KING.POL");
+    glEndList();
 }
 
 
