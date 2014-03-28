@@ -8,8 +8,8 @@
 
 #include "Point.h"
 
-Point::Point(double x, double y)
+Point::Point(double x_in, double y_in)
 {
-    this->x = x;
-    this->y = y;
+    x = x_in;
+    y = y_in;
 }
