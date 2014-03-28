@@ -10,8 +10,6 @@
 #include <GLUT/GLUT.h>
 #include <math.h>
 
-static double kControlPointRadius = 6;
-
 void drawCircle(double x1, double y1, double radius)
 {
     glColor3f(1.0,0.0,0.0);
@@ -27,6 +25,7 @@ void drawCircle(double x1, double y1, double radius)
 }
 
 void drawLine(Point p1, Point p2) {
+    glColor3f(0.0,0.0,1.0);
     glBegin(GL_LINES);
     glVertex3f(p1.x, p1.y, p1.z);
     glVertex3f(p2.x, p2.y, p2.z);
@@ -51,9 +50,23 @@ void Curve::draw()
     }
 
     Point pivot = points[0];
-    for (double t = 0.0;t <= 1.0; t += 0.1) {
+    for (double t = 0.0;t <= 1.0; t += 0.01) {
         Point P = drawBezier(points[0], points[1], points[2], points[3],  t);
         drawLine(pivot, P);
         pivot = P;
     }
+}
+
+int Curve::controlAtPoint(int x, int y)
+{
+    for (int i=0; i<4; i++)
+    {
+        Point point = points[i];
+        if (x >= point.x - kControlPointRadius && x <= point.x + kControlPointRadius &&
+            y >= point.y - kControlPointRadius && y <= point.y + kControlPointRadius)
+        {
+            return i;
+        }
+    }
+    return -1;
 }

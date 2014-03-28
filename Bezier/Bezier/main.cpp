@@ -12,66 +12,68 @@ using std::endl;
 #include <stdlib.h>
 #include <GLUT/GLUT.h>
 #include <math.h>
+#include <vector>
 
 #include "Curve.h"
 
 
 int SCREEN_HEIGHT = 480;
-// Keep track of times clicked, on 3 clicks draw.
-int NUMPOINTS = 0;
 
-Point abc[4];
+int selectedPoint;
+int selectedCurve;
+std::vector<Curve>curves;
 
-void myInit() {
-    glClearColor(0.0,0.0,0.0,0.0);
-    glColor3f(1.0,0.0,0.0);
+void myInit()
+{
+    glColor3d(0,0,0); // forground color
+	glClearColor(1, 1, 1, 0); // background color
     glPointSize(4.0);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0.0,640.0,0.0,480.0);
-}
-
-void myMouse(int button, int state, int x, int y) {
-    // If left button was clicked
-    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        // Store where the user clicked, note Y is backwards.
-        abc[NUMPOINTS].setxy((float)x,(float)(SCREEN_HEIGHT - y));
-        NUMPOINTS++;
-
-        // Draw the red  dot.
-//        drawDot(x, SCREEN_HEIGHT - y);
-
-        // If 3 points are drawn do the curve.
-        if(NUMPOINTS == 4) {
-            glColor3f(1.0,1.0,1.0);
-            // Draw two legs of the triangle
-//            drawLine(abc[0], abc[1]);
-//            drawLine(abc[1], abc[2]);
-//            drawLine(abc[2], abc[3]);
-            //drawLine(abc[3], abc[4]);
-//            Point POld = abc[0];
-            /* Draw each segment of the curve.  Make t increment in
-             smaller amounts for a more detailed curve. */
-            for(double t = 0.0;t <= 1.0; t += 0.1) {
-//                Point P = drawBezier(abc[0], abc[1], abc[2], abc[3],  t);
-//                drawLine(POld, P);
-//                POld = P;
-            }
-            glColor3f(1.0,0.0,0.0);
-            NUMPOINTS = 0;
-        }
-    }
-}
-
-void display() {
-	glClear(GL_COLOR_BUFFER_BIT);
 
     Curve curve;
     curve.points[0] = Point(50, 50);
     curve.points[1] = Point(100, 200);
     curve.points[2] = Point(200, 250);
     curve.points[3] = Point(400, 40);
-    curve.draw();
+    curves.push_back(curve);
+
+    selectedCurve = 0;
+    selectedPoint = -1;
+}
+
+void myMouse(int button, int state, int x, int y)
+{
+    selectedPoint = -1;
+    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        for (int i=0; i<curves.size(); i++)
+        {
+            Curve curve = curves[i];
+            selectedPoint = curve.controlAtPoint(x, SCREEN_HEIGHT - y);
+            if (selectedPoint != -1)
+                break;
+        }
+    }
+}
+
+void motion(int x, int y)
+{
+    y = SCREEN_HEIGHT - y - 1;
+    if (selectedPoint != -1)
+    {
+        curves[selectedCurve].points[selectedPoint].x = (double)x;
+        curves[selectedCurve].points[selectedPoint].y = (double)y;
+    }
+}
+
+void display() {
+	glClear(GL_COLOR_BUFFER_BIT);
+    for (int i=0; i<curves.size(); i++)
+    {
+        Curve curve = curves[i];
+        curve.draw();
+    }
 
     glutSwapBuffers();
 	glutPostRedisplay();
@@ -85,6 +87,7 @@ int main(int argc, char *argv[]) {
     glutCreateWindow("Bezier Curve");
     
     glutMouseFunc(myMouse);
+    glutMotionFunc(motion);
     glutDisplayFunc(display);
     
     myInit();
