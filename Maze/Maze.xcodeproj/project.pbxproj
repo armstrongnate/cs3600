@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		432965B31904C3DE00BA568B /* Tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 432965B11904C3DE00BA568B /* Tga.cpp */; };
 		432ACA2D1898A08E0040C900 /* graphics1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 432ACA2A1898A08E0040C900 /* graphics1.cpp */; };
 		432ACA2E1898A08E0040C900 /* maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 432ACA2B1898A08E0040C900 /* maze.cpp */; };
 		432ACA301898A0EE0040C900 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 432ACA2F1898A0EE0040C900 /* GLUT.framework */; };
@@ -27,6 +28,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		432965B11904C3DE00BA568B /* Tga.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tga.cpp; sourceTree = "<group>"; };
+		432965B21904C3DE00BA568B /* Tga.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tga.h; sourceTree = "<group>"; };
+		432965B41904C50500BA568B /* fruit.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = fruit.tga; sourceTree = "<group>"; };
+		432965B61904D5F000BA568B /* hedge.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = hedge.tga; sourceTree = "<group>"; };
+		432965B71904DC7D00BA568B /* snow.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = snow.tga; sourceTree = "<group>"; };
+		432965B81904DD1500BA568B /* sky.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = sky.tga; sourceTree = "<group>"; };
+		432965BF1904E91600BA568B /* johnny.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = johnny.tga; sourceTree = "<group>"; };
 		432ACA1E18989FC50040C900 /* Maze */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Maze; sourceTree = BUILT_PRODUCTS_DIR; };
 		432ACA2A1898A08E0040C900 /* graphics1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graphics1.cpp; sourceTree = "<group>"; };
 		432ACA2B1898A08E0040C900 /* maze.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = maze.cpp; sourceTree = "<group>"; };
@@ -71,6 +79,13 @@
 		432ACA2018989FC50040C900 /* Maze */ = {
 			isa = PBXGroup;
 			children = (
+				432965BF1904E91600BA568B /* johnny.tga */,
+				432965B81904DD1500BA568B /* sky.tga */,
+				432965B71904DC7D00BA568B /* snow.tga */,
+				432965B61904D5F000BA568B /* hedge.tga */,
+				432965B41904C50500BA568B /* fruit.tga */,
+				432965B11904C3DE00BA568B /* Tga.cpp */,
+				432965B21904C3DE00BA568B /* Tga.h */,
 				432ACA2A1898A08E0040C900 /* graphics1.cpp */,
 				432ACA2B1898A08E0040C900 /* maze.cpp */,
 				432ACA2C1898A08E0040C900 /* maze.h */,
@@ -131,6 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				432965B31904C3DE00BA568B /* Tga.cpp in Sources */,
 				43F8470A18A47FA9004DC9A6 /* Rat.cpp in Sources */,
 				432ACA2D1898A08E0040C900 /* graphics1.cpp in Sources */,
 				432ACA2E1898A08E0040C900 /* maze.cpp in Sources */,

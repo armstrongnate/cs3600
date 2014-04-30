@@ -15,6 +15,7 @@
 #include <cstring>
 #include <iostream>
 #include "Rat.h"
+#include "Tga.h"
 
 #include <GLUT/GLUT.h>
 
@@ -23,6 +24,10 @@
 double screen_x = 1000;
 double screen_y = 800;
 bool gLeft, gMiddle, gRight, gFirstPerson;
+
+// Textures
+const int num_textures = 4;
+GLuint texName[num_textures];
 
 Maze gMaze;
 Rat gRat;
@@ -105,40 +110,42 @@ void DrawText(double x, double y, char *string)
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
+  glEnable(GL_DEPTH_TEST);
 
-    glLoadIdentity();
-    double dt = GetDeltaTime();
-    if (gFirstPerson)
-    {
-        double rad = gRat.getDegrees()/180.0 * M_PI;
-        double dx = cos(rad) * MOVE_SPEED * dt;
-        double dy = sin(rad) * MOVE_SPEED * dt;
-        gluLookAt(gRat.getX(), gRat.getY(), .04, gRat.getX() + dx, gRat.getY() + dy, .04, 0, 0, 1);
-        // when doing rat, calculate at point but z will stay.
-    }
-    else
-    {
-        gluLookAt(M*.5, -N*.5, 15, M*.5, N*.5, 0, 0, 0, 1); // 3 eye, 3 at point, 3 z-axis up
-    }
+  glLoadIdentity();
+  double dt = GetDeltaTime();
+  if (gFirstPerson)
+  {
+    double rad = gRat.getDegrees()/180.0 * M_PI;
+    double dx = cos(rad) * MOVE_SPEED * dt;
+    double dy = sin(rad) * MOVE_SPEED * dt;
+    gluLookAt(gRat.getX(), gRat.getY(), .15, gRat.getX() + dx, gRat.getY() + dy, .15, 0, 0, 1);
+    // when doing rat, calculate at point but z will stay.
+  }
+  else
+  {
+    gluLookAt(M*.5, -N*.5, 15, M*.5, N*.5, 0, 0, 0, 1); // 3 eye, 3 at point, 3 z-axis up
+  }
 
 	gMaze.draw();
-    gRat.draw(gFirstPerson);
-    if (gLeft) gRat.spinLeft(dt);
-    if (gRight) gRat.spinRight(dt);
-    if (gMiddle) gRat.move(dt);
+  gRat.draw(gFirstPerson);
 
-    if (gFirstPerson)
-    {
-        gluPerspective(.02, (double)screen_x/screen_y, .0001, .0001);
-    }
-    else
-    {
-        gluPerspective(40, (double)screen_x/screen_y, N*.5, 3*(M+N));
-    }
+  if (gLeft) gRat.spinLeft(dt);
+  if (gRight) gRat.spinRight(dt);
+  if (gMiddle) gRat.move(dt);
+
+  if (gFirstPerson)
+  {
+    gluPerspective(.02, (double)screen_x/screen_y, .0001, .0001);
+  }
+  else
+  {
+    gluPerspective(40, (double)screen_x/screen_y, N*.5, 3*(M+N));
+  }
 
 	glutSwapBuffers();
 	glutPostRedisplay();
+
 }
 
 
@@ -223,11 +230,205 @@ void mouse(int mouse_button, int state, int x, int y)
 	glutPostRedisplay();
 }
 
+// textures
+
+gliGenericImage *readTgaImage(char *filename)
+{
+  FILE *file;
+  gliGenericImage *image;
+
+  file = fopen(filename, "rb");
+  if (file == NULL) {
+    printf("Error: could not open \"%s\"\n", filename);
+    return NULL;
+  }
+  image = gliReadTGA(file, filename);
+  fclose(file);
+  if (image == NULL) {
+    printf("Error: could not decode file format of \"%s\"\n", filename);
+    return NULL;
+  }
+  return image;
+}
+
+// Return true if h is a perfect power of 2 (up to 4096)
+bool PowerOf2(int h)
+{
+	if(h!= 2 && h!=4 && h!=8 && h!=16 && h!=32 && h!=64 && h!=128 &&
+     h!=256 && h!=512 && h!=1024 && h!=2048 && h!=4096)
+		return false;
+	else
+		return true;
+}
+
+// Generic image loader code.
+gliGenericImage *readImage(char *filename)
+{
+	size_t size = strlen(filename);
+	if(toupper(filename[size-3]) == 'T' && toupper(filename[size-2]) == 'G' && toupper(filename[size-1]) == 'A')
+	{
+		gliGenericImage * result = readTgaImage(filename);
+		if(!result)
+		{
+			std::cerr << "Error opening " << filename << std::endl;
+			exit(1);
+		}
+		return result;
+	}
+	else
+	{
+		std::cerr << "Unknown Filetype!\n";
+		exit(1);
+	}
+}
+
+// This resets the edges of the texture image to a given "border color".
+// You must call this for clamped images that do not take up the whole polygon.
+// Otherwise, the texture edges will smear outward across the rest
+// of the polygon.
+void SetBorder(gliGenericImage * image)
+{
+	// set a border color.
+	unsigned int border_r=50;
+	unsigned int border_g=50;
+	unsigned int border_b=255;
+	int x,y;
+	y=0;
+	for(x=0; x<image->width; x++)
+	{
+		image->pixels[ 3*(y*image->width + x) + 0]=border_r;
+		image->pixels[ 3*(y*image->width + x) + 1]=border_g;
+		image->pixels[ 3*(y*image->width + x) + 2]=border_b;
+	}
+	y=1;
+	for(x=0; x<image->width; x++)
+	{
+		image->pixels[ 3*(y*image->width + x) + 0]=border_r;
+		image->pixels[ 3*(y*image->width + x) + 1]=border_g;
+		image->pixels[ 3*(y*image->width + x) + 2]=border_b;
+	}
+	y=image->height-1;
+	for(x=0; x<image->width; x++)
+	{
+		image->pixels[ 3*(y*image->width + x) + 0]=border_r;
+		image->pixels[ 3*(y*image->width + x) + 1]=border_g;
+		image->pixels[ 3*(y*image->width + x) + 2]=border_b;
+	}
+	y=image->height-2;
+	for(x=0; x<image->width; x++)
+	{
+		image->pixels[ 3*(y*image->width + x) + 0]=border_r;
+		image->pixels[ 3*(y*image->width + x) + 1]=border_g;
+		image->pixels[ 3*(y*image->width + x) + 2]=border_b;
+	}
+
+	x=0;
+	for(y=0; y<image->height; y++)
+	{
+		image->pixels[ 3*(y*image->width + x) + 0]=border_r;
+		image->pixels[ 3*(y*image->width + x) + 1]=border_g;
+		image->pixels[ 3*(y*image->width + x) + 2]=border_b;
+	}
+	x=1;
+	for(y=0; y<image->height; y++)
+	{
+		image->pixels[ 3*(y*image->width + x) + 0]=border_r;
+		image->pixels[ 3*(y*image->width + x) + 1]=border_g;
+		image->pixels[ 3*(y*image->width + x) + 2]=border_b;
+	}
+	x=image->width-1;
+	for(y=0; y<image->height; y++)
+	{
+		int index = 3*(y*image->width + x);
+		image->pixels[ index + 0]=border_r;
+		image->pixels[ index + 1]=border_g;
+		image->pixels[ index + 2]=border_b;
+	}
+	x=image->width-2;
+	for(y=0; y<image->height; y++)
+	{
+		int index = 3*(y*image->width + x);
+		image->pixels[ index + 0]=border_r;
+		image->pixels[ index + 1]=border_g;
+		image->pixels[ index + 2]=border_b;
+	}
+}
+
+void initTextures() {
+  gliGenericImage *image[num_textures];
+	int n=0;
+	image[n++] = readImage("/Users/nate/school/3600/Maze/Maze/hedge.tga");
+	image[n++] = readImage("/Users/nate/school/3600/Maze/Maze/snow.tga");
+	image[n++] = readImage("/Users/nate/school/3600/Maze/Maze/sky.tga");
+	image[n++] = readImage("/Users/nate/school/3600/Maze/Maze/johnny.tga");
+	if(n!=num_textures)
+	{
+		printf("Error: Wrong number of textures\n");
+		exit(1);;
+	}
+
+	glGenTextures(num_textures, texName);
+
+	for(int i=0; i<num_textures; i++)
+	{
+		glBindTexture(GL_TEXTURE_2D, texName[i]);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+		int repeats = i == 1 || i == 2;
+		int needs_border = i == 3; // Needed if clamping and not filling the whole polygon.
+		if(repeats)
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		}
+		else
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		}
+		if(needs_border)
+		{
+			// set a border.
+			SetBorder(image[i]);
+		}
+
+		bool mipmaps = false;
+		if(!PowerOf2(image[i]->height) || !PowerOf2(image[i]->width))
+		{
+			// WARNING: Images that do not have width and height as
+			// powers of 2 MUST use mipmaps.
+			mipmaps = true;
+		}
+
+		if (mipmaps)
+		{
+			gluBuild2DMipmaps(GL_TEXTURE_2D, image[i]->components,
+                        image[i]->width, image[i]->height,
+                        image[i]->format, GL_UNSIGNED_BYTE, image[i]->pixels);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                      //GL_LINEAR_MIPMAP_LINEAR);
+                      GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                      //GL_LINEAR);
+                      GL_NEAREST);
+		}
+		else
+		{
+			glTexImage2D(GL_TEXTURE_2D, 0, image[i]->components,
+                   image[i]->width, image[i]->height, 0,
+                   image[i]->format, GL_UNSIGNED_BYTE, image[i]->pixels);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		}
+	}
+}
+
 // Your initialization code goes here.
 void InitializeMyStuff()
 {
-    gRat.setMaze(&gMaze);
-    gFirstPerson = true;
+  gRat.setMaze(&gMaze);
+  gFirstPerson = true;
+
+  initTextures();
 }
 
 
@@ -240,12 +441,12 @@ int main(int argc, char **argv)
 	glutInitWindowPosition(50, 50);
 
 	int fullscreen = 0;
-	if (fullscreen) 
+	if (fullscreen)
 	{
 		glutGameModeString("800x600:32");
 		glutEnterGameMode();
-	} 
-	else 
+	}
+	else
 	{
 		glutCreateWindow("This appears in the title bar");
 	}
@@ -257,6 +458,7 @@ int main(int argc, char **argv)
 
 	glColor3d(0,0,0); // forground color
 	glClearColor(1, 1, 1, 0); // background color
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	InitializeMyStuff();
 
 	glutMainLoop();
