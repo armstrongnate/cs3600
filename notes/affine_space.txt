@@ -1,0 +1,50 @@
+1. Points
+2. Vectors
+3. Scalars
+4. Parametric Form
+
+v is a vector
+v = Vector(2, 3, 0)
+
+1. Points
+  - Add
+    YOU CANT!
+
+  - Scale
+    YOU CANT!
+
+2. Vectors
+  - Add
+    just add x and y
+
+  - Scale
+    just multiply scale by x and y
+
+  - Define vector from two points
+    v = p2 - p1
+    destination minus source
+
+  - add vector and a point
+    returns a point
+
+  - Length
+    l = sqrt(a^2 + b^2) or l = hypot(a, b) or l = dot(v, v)
+    we want vectors to be 1 long, so we must normalize it
+
+  - Normalize
+    vNormalized = (x/v.length, y/v.length)
+
+3. Parametric Form
+  L(t) = p + v*t
+
+4. Dot product
+  u and v are vectors
+  dot(u, v) = u.dx * v.dx + u.dy * v.dy
+  if the vectors are going in the same direction, the dot product will be 1
+  if they are 90 degrees off, dot product will be 0
+  180 will be -1
+  angle = arcCos(dot)
+  only works if vectors are normalized
+
+
+to normalize a vector: v / length

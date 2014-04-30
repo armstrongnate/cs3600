@@ -1,0 +1,10 @@
+affine transformation
+  straight lines stay straight
+  types:
+    translate
+    scale
+    rotate
+    shear
+
+rigid body transformations
+  leave it its same size and shape but change its location

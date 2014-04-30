@@ -1,0 +1,12 @@
+Nurbs:
+
+bspline:
+  c2 continuity
+  curves must share at least 4 points
+  knotVector is after the fact
+
+non uniform bspline:
+  control velocity
+  control start and end points
+  with a knot vector
+  you can put whatever you want for the knotVector

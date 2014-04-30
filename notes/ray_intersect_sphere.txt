@@ -1,0 +1,29 @@
+U is eye
+S is sphere's center
+
+x = Ux + Dx * t
+P(t) = U + D * t
+
+(x - Sx)^2 + (y-Sy)^2 + (z-Sz)^s - R^2 = 0
+
+(Ux + Dx * t - Sx)^2 + (Uy + Dy * t - Sy)^2 + (Uz + Dz * t - Sz)^2 - R^2 = 0
+
+Mx = Ux - Sx
+(Mx + Dx * t)
+(Mx^2 + 2MxDxt + Dx^2t^2) + () + () - R^2 = 0
+
+A = Dx^2 + Dy^2 + Dz^2 or A = DotProduct(D, D)
+B = 2MxDx + 2MyDy + 2MzDz or B = 2 * DotProduct(M, D)
+C = Mx^2 + My^2 + Mz^2 - R2 or C = DotProduct(M, M) - R^2
+
+
+T1, T2 = Quadratic
+if B^2 - 4AC is negative return false
+return false if both T's are negative
+
+T = choose smallest positive T.
+
+bool RayIntersectSphere(U, D, sphere, distance, interesectionPoint, intersectionNormal)
+
+intersectionPoint = U + D * T
+intersectionNormal = Normalize(intersectionPoint - S)
