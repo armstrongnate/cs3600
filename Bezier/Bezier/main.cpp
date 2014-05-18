@@ -24,6 +24,7 @@ int selectedPoint;
 int selectedCurve;
 double startingPoints[4][2];
 std::vector<Curve *>curves;
+bool moveFlag = false;
 
 enum color_menu_options {
     color_menu_option_blue = 1,
@@ -126,6 +127,7 @@ void myInit()
 void myMouse(int button, int state, int x, int y)
 {
     selectedPoint = -1;
+//    selectedCurve = -1;
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         for (int i=0; i<curves.size(); i++)
         {
@@ -145,11 +147,36 @@ void myMouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
     y = SCREEN_HEIGHT - y - 1;
+    if (moveFlag) {
+      Curve *curve = curves[selectedCurve];
+      double oldX = curve->points[selectedPoint]->x;
+      double oldY = curve->points[selectedPoint]->y;
+      double dx = (double)x - oldX;
+      double dy = (double)y - oldY;
+      for (int i=0; i<4; i++) {
+        curves[selectedCurve]->points[i]->x += dx;
+        curves[selectedCurve]->points[i]->y += dy;
+      }
+    }
     if (selectedPoint != -1)
     {
         curves[selectedCurve]->points[selectedPoint]->x = (double)x;
         curves[selectedCurve]->points[selectedPoint]->y = (double)y;
     }
+}
+
+void keyboard(unsigned char c, int x, int y)
+{
+	switch (c)
+	{
+		case 'm': // escape character means to quit the program
+			moveFlag = !moveFlag;
+			break;
+		default:
+			return; // if we don't care, return without glutPostRedisplay()
+	}
+
+	glutPostRedisplay();
 }
 
 void display() {
@@ -180,6 +207,7 @@ int main(int argc, char *argv[]) {
     glutMouseFunc(myMouse);
     glutMotionFunc(motion);
     glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
 
     myInit();
     glutMainLoop();

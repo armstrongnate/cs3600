@@ -23,6 +23,7 @@
 double screen_x = 1000;
 double screen_y = 800;
 bool gLeft, gMiddle, gRight, gFirstPerson;
+double gWaterHeight = -1.9;
 
 Maze gMaze;
 Rat gRat;
@@ -117,7 +118,7 @@ void display(void)
 
         double hover = 2.0;
         double terrainHeight = gMaze.getZ(gRat.getX() + dx, gRat.getY() + dy);
-        double waterHeight = -1.5;
+        double waterHeight = gWaterHeight + .4;
         double H = fmax(terrainHeight, waterHeight) + hover;
         double currentTerrainHeight = fmax(waterHeight, gMaze.getZ(gRat.getX(), gRat.getY()));
         double tilt = (fmax(terrainHeight, waterHeight) - currentTerrainHeight);
@@ -130,7 +131,7 @@ void display(void)
         gluLookAt(M*.5, -N*.5, 15, M*.5, N*.5, 0, 0, 0, 1); // 3 eye, 3 at point, 3 z-axis up
     }
 
-	gMaze.draw();
+	gMaze.draw(gWaterHeight);
     gRat.draw(gFirstPerson);
     if (gLeft) gRat.spinLeft(dt);
     if (gRight) gRat.spinRight(dt);
@@ -162,9 +163,18 @@ void keyboard(unsigned char c, int x, int y)
 		case 'b':
 			// do something when 'b' character is hit.
 			break;
-        case '1':
-            gFirstPerson = !gFirstPerson;
-            break;
+    case '1':
+        gFirstPerson = !gFirstPerson;
+        break;
+    case 'd':
+      gMiddle = !gMiddle;
+      break;
+    case 'i':
+      gWaterHeight += 0.2;
+      break;
+    case 'k':
+      gWaterHeight -= 0.2;
+      break;
 		default:
 			return; // if we don't care, return without glutPostRedisplay()
 	}

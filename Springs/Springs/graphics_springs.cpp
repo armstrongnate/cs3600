@@ -37,6 +37,7 @@ std::clock_t START;
 double last_update;
 double nParticles;
 double springForceUpdateInterval = .0009;
+double speedIncrease = 0;
 
 // The particle system.
 ParticleSystem PS;
@@ -139,7 +140,8 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3dv(whiteMaterial);
 
-	double DeltaT = PS.GetDeltaT();
+	double DeltaT = PS.GetDeltaT() + speedIncrease;
+    speedIncrease += .005;
 	//EulerStep(PS, DeltaT);
 	//MidpointStep(PS, DeltaT);
 	RungeKuttaStep(PS, DeltaT);

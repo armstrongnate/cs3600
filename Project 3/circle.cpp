@@ -10,7 +10,7 @@
 #include <vector>
 #include <math.h>
 
-double GRAVITY = .7;
+double GRAVITY = .1;
 double AIR_FRICTION = .999;
 const double COLLISION_FRICTION = 1;
 
@@ -93,7 +93,7 @@ void Collide(int p1, int p2, std::vector<Circle *>particles)
 bool circlesCollide(Circle *circle1, Circle *circle2)
 {
     double d = sqrt(pow(circle2->getnextx() - circle1->getnextx(), 2) + pow(circle2->getnexty() - circle1->getnexty(), 2));
-    return d < circle1->getradius() + circle2->getradius();
+    return d < circle1->getradius() + circle2->getradius() && ((circle1->_isRed && circle2->_isRed) || (!circle1->_isRed && !circle2->_isRed));
 }
 
 // Drawing
@@ -110,7 +110,7 @@ void DrawCircle(double x1, double y1, double radius)
 	glEnd();
 }
 
-Circle::Circle(double x, double y, double radius, double dx, double dy, double red, double green, double blue)
+Circle::Circle(double x, double y, double radius, double dx, double dy, double red, double green, double blue, bool isRed)
 {
     _x = x;
     _y = y;
@@ -121,6 +121,7 @@ Circle::Circle(double x, double y, double radius, double dx, double dy, double r
     _green = green;
     _blue = blue;
     _colliding = false;
+    _isRed = isRed;
 }
 
 void Circle::update(int i, double screenX, double screenY, std::vector<Circle *>circles)

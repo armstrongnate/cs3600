@@ -17,7 +17,7 @@ class Circle
 {
 
 public:
-    Circle(double x, double y, double radius, double dx, double dy, double red, double green, double blue);
+    Circle(double x, double y, double radius, double dx, double dy, double red, double green, double blue, bool isRed);
     void update(int i, double screenX, double screenY, std::vector<Circle *>circles);
     void draw();
     double getx();
@@ -32,6 +32,7 @@ public:
 	double getnexty();
 	void setdx(double dx);
 	void setdy(double dy);
+    bool _isRed;
 
 private:
     double _x, _y, _radius, _dx, _dy, _red, _green, _blue;

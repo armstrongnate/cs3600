@@ -33,7 +33,7 @@ class Maze
 	};
 public:
 	Maze();
-	void draw();
+	void draw(double waterHeight);
     double getZ(double x, double y);
     bool isLegal(double x, double y, double r);
 private:

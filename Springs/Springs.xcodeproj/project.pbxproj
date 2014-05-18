@@ -44,7 +44,6 @@
 		43EFC86818898FC1007587C7 /* forces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forces.h; sourceTree = "<group>"; };
 		43EFC86E1889903F007587C7 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		43EFC87018899048007587C7 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		43EFC872188C90B0007587C7 /* data.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = data.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +80,6 @@
 		43EFC85518898F9E007587C7 /* Springs */ = {
 			isa = PBXGroup;
 			children = (
-				43EFC872188C90B0007587C7 /* data.txt */,
 				43EFC85F18898FC1007587C7 /* particle.h */,
 				43EFC86418898FC1007587C7 /* particle.cpp */,
 				43EFC86018898FC1007587C7 /* forces.cpp */,

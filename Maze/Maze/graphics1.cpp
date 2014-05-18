@@ -24,6 +24,7 @@
 double screen_x = 1000;
 double screen_y = 800;
 bool gLeft, gMiddle, gRight, gFirstPerson;
+double gRatHeight = 0.15;
 
 // Textures
 const int num_textures = 4;
@@ -119,7 +120,7 @@ void display(void)
     double rad = gRat.getDegrees()/180.0 * M_PI;
     double dx = cos(rad) * MOVE_SPEED * dt;
     double dy = sin(rad) * MOVE_SPEED * dt;
-    gluLookAt(gRat.getX(), gRat.getY(), .15, gRat.getX() + dx, gRat.getY() + dy, .15, 0, 0, 1);
+    gluLookAt(gRat.getX(), gRat.getY(), gRatHeight, gRat.getX() + dx, gRat.getY() + dy, gRatHeight, 0, 0, 1);
     // when doing rat, calculate at point but z will stay.
   }
   else
@@ -159,11 +160,23 @@ void keyboard(unsigned char c, int x, int y)
 			exit(0);
 			break;
 		case 'b':
-			// do something when 'b' character is hit.
+			gRatHeight -= .02;
+      if (gRatHeight < .15) {
+        gRatHeight = .15;
+      }
 			break;
-        case '1':
-            gFirstPerson = !gFirstPerson;
-            break;
+    case 'a':
+      gRatHeight += .02;
+      if (gRatHeight > 1) {
+        gRatHeight = 1;
+      }
+			break;
+    case 'd':
+      gMiddle = !gMiddle;
+      break;
+    case '1':
+        gFirstPerson = !gFirstPerson;
+        break;
 		default:
 			return; // if we don't care, return without glutPostRedisplay()
 	}
@@ -373,8 +386,8 @@ void initTextures() {
 	{
 		glBindTexture(GL_TEXTURE_2D, texName[i]);
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-		int repeats = i == 1 || i == 2;
-		int needs_border = i == 3; // Needed if clamping and not filling the whole polygon.
+		int repeats = i == 1 || i == 3;
+		int needs_border = false; // i == 3; // Needed if clamping and not filling the whole polygon.
 		if(repeats)
 		{
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

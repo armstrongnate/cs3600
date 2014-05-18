@@ -22,8 +22,8 @@ GLdouble brightGreenMaterial[] = {0.1, 0.9, 0.1, 1.0};
 GLdouble blueMaterial[] = {0.1, 0.2, 0.7, 1.0};
 GLdouble whiteMaterial[] = {1.0, 1.0, 1.0, 1.0};
 
-double screen_x = 700;
-double screen_y = 700;
+double screen_x = 800;
+double screen_y = 800;
 
 enum piece_numbers {
     pawn = 100,
@@ -182,10 +182,19 @@ void DrawBoard()
                     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, checker_light);
                 }
             }
-            glBegin(GL_QUADS);
+            glBegin(GL_POLYGON);
+            glNormal3f(0, 1, 0);
             glVertex3d(col, 0, row);
             glVertex3d(col, 0, row + 1000);
             glVertex3d(col + 1000, 0, row + 1000);
+            glVertex3d(col + 1000, 0, row);
+            glEnd();
+
+            glBegin(GL_POLYGON);
+            glNormal3f(0, 0, -1);
+            glVertex3d(col, 0, row);
+            glVertex3d(col, -1000, row);
+            glVertex3d(col + 1000, -1000, row);
             glVertex3d(col + 1000, 0, row);
             glEnd();
 

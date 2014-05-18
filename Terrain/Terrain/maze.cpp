@@ -107,7 +107,7 @@ double Maze::getZ(double x, double y)
     return (y * .03 * sin(y * .09)) + (.221 * y * cos(x*.09)) + ( .9 * sin(x*.432)) * (x * .03 + cos(y*.32324));
 }
 
-void Maze::draw()
+void Maze::draw(double waterHeight)
 {
     double zValues[RES+1][RES+1];
     for (int i=0; i<RES+1; i++)
@@ -122,9 +122,6 @@ void Maze::draw()
     {
         for (int j=0; j<RES-1; j++)
         {
-//            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//            glEnable(GL_BLEND);
-
             glColor3ub(i*2342423%255, j*2234232342%255, j*i*128%255);
             glBegin(GL_QUADS);
             glVertex3d(i, j, zValues[i][j]);
@@ -134,7 +131,7 @@ void Maze::draw()
             glEnd();
 
             glColor4ub(0, 0, 255, 1.0);
-            double waterZ = -1.9;
+            double waterZ = waterHeight;
             glBegin(GL_QUADS);
             glVertex3d(i, j, waterZ);
             glVertex3d(i+1, j, waterZ);

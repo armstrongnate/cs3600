@@ -24,7 +24,7 @@
 
 // Global Variables (Only what you need!)
 
-double kNumCircles = 10;
+double kNumCircles = 5;
 
 double gDX = .2;
 double gDY = .2;
@@ -34,6 +34,8 @@ double gDYRange = .05;
 
 double gRadius = 30;
 double gRadiusRange = 20;
+
+int gNumSides = 6;
 
 Balls *BALLS;
 
@@ -84,6 +86,21 @@ void DrawText(double x, double y, char *string)
     glDisable(GL_BLEND);
 }
 
+void drawShape() {
+  double radius = 300;
+  double x1 = 500;
+  double y1 = 400;
+  glBegin(GL_POLYGON);
+	for(int i=0; i<gNumSides; i++)
+	{
+		double theta = (double)i/gNumSides * 2.0 * 3.1415926;
+		double x = x1 + radius * cos(theta);
+		double y = y1 + radius * sin(theta);
+		glVertex2d(x, y);
+	}
+	glEnd();
+}
+
 
 //
 // GLUT callback functions
@@ -94,29 +111,30 @@ void DrawText(double x, double y, char *string)
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+  drawShape();
 
-    for (int i=0; i<BALLS->getCircles().size(); i++)
-    {
-        Circle *circle = BALLS->getCircles()[i];
-        circle->update(i, BALLS->getScreenX(), BALLS->getScreenY(), BALLS->getCircles());
-        circle->draw();
-        /*
-         circle.update()
-            dy -= gravity
-            dy *= AIR_FRICTION which is .999
-            dx *= AIR_FRICTION
-            
-            wall collisions
-            ball-ball collisions
-            update position
-                x += dx
-                y += dy
-         circle.draw()
-        */
-    }
+//    for (int i=0; i<BALLS->getCircles().size(); i++)
+//    {
+//        Circle *circle = BALLS->getCircles()[i];
+//        circle->update(i, BALLS->getScreenX(), BALLS->getScreenY(), BALLS->getCircles());
+//        circle->draw();
+//        /*
+//         circle.update()
+//            dy -= gravity
+//            dy *= AIR_FRICTION which is .999
+//            dx *= AIR_FRICTION
+//            
+//            wall collisions
+//            ball-ball collisions
+//            update position
+//                x += dx
+//                y += dy
+//         circle.draw()
+//        */
+//    }
 
 	glutSwapBuffers();
-    glutPostRedisplay();
+  glutPostRedisplay();
 }
 
 double randomNumberInRange(double min, double max)
@@ -129,8 +147,30 @@ double randomNumberInRange(double min, double max)
 // system whenever a key is pressed.
 void keyboard(unsigned char c, int x, int y)
 {
+  std::cout << c << std::endl;
 	switch (c)
 	{
+    case '3':
+      gNumSides = 3;
+      break;
+    case '4':
+      gNumSides = 4;
+      break;
+    case '5':
+      gNumSides = 5;
+      break;
+    case '6':
+      gNumSides = 6;
+      break;
+    case '7':
+      gNumSides = 7;
+      break;
+    case '8':
+      gNumSides = 8;
+      break;
+    case '9':
+      gNumSides = 9;
+      break;
 		case 27: // escape character means to quit the program
 			exit(0);
 			break;
@@ -170,6 +210,16 @@ void mouse(int mouse_button, int state, int x, int y)
 {
 	if (mouse_button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
+    double radius, dx, dy, r, g, b;
+    bool isRed;
+    radius = randomNumberInRange(gRadius - gRadiusRange, gRadius + gRadiusRange);
+    dx = randomNumberInRange(gDX - gDXRange, gDX + gDXRange);
+    dy = randomNumberInRange(gDY - gDYRange, gDY + gDYRange);
+    r = randomNumberInRange(0, 255);
+    g = randomNumberInRange(0, 255);
+    b = randomNumberInRange(0, 255);
+    isRed = false;
+    BALLS->addCircle(new Circle(x, BALLS->getScreenY() - y, radius, dx, dy, r, g, b, isRed));
 	}
 	if (mouse_button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
@@ -219,10 +269,20 @@ void InitializeMyStuff()
         }
         dx = randomNumberInRange(gDX - gDXRange, gDX + gDXRange);
         dy = randomNumberInRange(gDY - gDYRange, gDY + gDYRange);
-        r = randomNumberInRange(0, 255);
-        g = randomNumberInRange(0, 255);
-        b = randomNumberInRange(0, 255);
-        BALLS->addCircle(new Circle(x, y, radius, dx, dy, r, g, b));
+//        r = randomNumberInRange(0, 255);
+//        g = randomNumberInRange(0, 255);
+//        b = randomNumberInRange(0, 255);
+        g = 0;
+        b = 255;
+        r = 0;
+        bool isRed = false;
+        if (i < 5)
+        {
+            isRed = true;
+            r = 255;
+            b = 0;
+        }
+        BALLS->addCircle(new Circle(x, y, radius, dx, dy, r, g, b, isRed));
     }
 }
 
